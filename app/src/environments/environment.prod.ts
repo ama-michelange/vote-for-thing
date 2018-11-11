@@ -1,3 +1,6 @@
+import { environmentShared } from "./environment.shared";
+
 export const environment = {
-   production: true
+   production: true,
+   shared: environmentShared,
 };
