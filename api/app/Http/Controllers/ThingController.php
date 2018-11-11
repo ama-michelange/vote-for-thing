@@ -27,7 +27,6 @@ class ThingController extends ApiController
       return new ThingTransformer();
    }
 
-
    /**
     * Get the validation rules for create.
     *
@@ -42,7 +41,7 @@ class ThingController extends ApiController
          'image_url' => 'url',
          'description_url' => 'url',
          'legal' => 'date',
-         'description' => 'string',
+         'description' => 'string'
       ];
    }
 
@@ -62,7 +61,7 @@ class ThingController extends ApiController
          'image_url' => 'url',
          'description_url' => 'url',
          'legal' => 'date',
-         'description' => 'string',
+         'description' => 'string'
       ];
    }
 
@@ -77,6 +76,4 @@ class ThingController extends ApiController
       }
       return $pData;
    }
-
-
 }

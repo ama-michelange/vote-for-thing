@@ -2,10 +2,8 @@
 
 namespace App\Domain\Helper;
 
-
 class ConvertHelper
 {
-
    /**
     * Déplace, s'il existe, l'article du début d'un titre à la fin du même titre.
     * Ex : 'La page blanche' devient 'Page blanche (La)'
@@ -24,19 +22,19 @@ class ConvertHelper
       $sTitleRet = $sTrimTitle;
 
       if (false == empty($sTitleUp)) {
-         if (($lenTitleUp > 4) && (0 === substr_compare($sTitleUp, 'LES ', 0, 4))) {
+         if ($lenTitleUp > 4 && 0 === substr_compare($sTitleUp, 'LES ', 0, 4)) {
             $sTitleRet = mb_ucfirst(substr($sTrimTitle, 4)) . ' (' . mb_ucfirst(substr($sTrimTitle, 0, 3)) . ')';
-         } elseif (($lenTitleUp > 3) && (0 === substr_compare($sTitleUp, 'LE ', 0, 3))) {
+         } elseif ($lenTitleUp > 3 && 0 === substr_compare($sTitleUp, 'LE ', 0, 3)) {
             $sTitleRet = mb_ucfirst(substr($sTrimTitle, 3)) . ' (' . mb_ucfirst(substr($sTrimTitle, 0, 2)) . ')';
-         } elseif (($lenTitleUp > 3) && (0 === substr_compare($sTitleUp, 'LA ', 0, 3))) {
+         } elseif ($lenTitleUp > 3 && 0 === substr_compare($sTitleUp, 'LA ', 0, 3)) {
             $sTitleRet = mb_ucfirst(substr($sTrimTitle, 3)) . ' (' . mb_ucfirst(substr($sTrimTitle, 0, 2)) . ')';
-         } elseif (($lenTitleUp > 2) && (0 === substr_compare($sTitleUp, "L'", 0, 2))) {
+         } elseif ($lenTitleUp > 2 && 0 === substr_compare($sTitleUp, "L'", 0, 2)) {
             $sTitleRet = mb_ucfirst(substr($sTrimTitle, 2)) . ' (' . mb_ucfirst(substr($sTrimTitle, 0, 2)) . ')';
-         } elseif (($lenTitleUp > 7) && (0 === substr_compare($sTitleUp, 'L&#039;', 0, 7))) {
+         } elseif ($lenTitleUp > 7 && 0 === substr_compare($sTitleUp, 'L&#039;', 0, 7)) {
             $sTitleRet = mb_ucfirst(substr($sTrimTitle, 7)) . ' (' . mb_ucfirst(substr($sTrimTitle, 0, 7)) . ')';
-         } elseif (($lenTitleUp > 7) && (0 === substr_compare($sTitleUp, 'L\U0027', 0, 7))) {
+         } elseif ($lenTitleUp > 7 && 0 === substr_compare($sTitleUp, 'L\U0027', 0, 7)) {
             $sTitleRet = mb_ucfirst(substr($sTrimTitle, 7)) . ' (' . mb_ucfirst(substr($sTrimTitle, 0, 7)) . ')';
-         } elseif (($lenTitleUp > 4) && (0 === substr_compare($sTitleUp, 'THE ', 0, 4))) {
+         } elseif ($lenTitleUp > 4 && 0 === substr_compare($sTitleUp, 'THE ', 0, 4)) {
             $sTitleRet = mb_ucfirst(substr($sTrimTitle, 4)) . ' (' . mb_ucfirst(substr($sTrimTitle, 0, 3)) . ')';
          }
       }
@@ -55,7 +53,6 @@ class ConvertHelper
       }
       return htmlspecialchars_decode($pString, ENT_HTML5 | ENT_QUOTES);
    }
-
 }
 
 /**

@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Storage;
 
 class SeedTools
 {
-
    /**
     * Convert the model to JSON and save it in file.
     * <p>The file is saved in 'storage/app/[$pPathname]/[TableNameOfModel].json'</p>
@@ -39,7 +38,7 @@ class SeedTools
    public static function loadFromJsonSeedFile($pModelClass, string $pPathname = 'jsonseed')
    {
       // Prepare
-      $table = with(new $pModelClass)->getTable();
+      $table = with(new $pModelClass())->getTable();
       $file = $pPathname . '/' . $table . '.json';
       if (config('vft.migrate.verbose')) {
          printf("Loading: File '%s'" . PHP_EOL, $file);
@@ -51,7 +50,7 @@ class SeedTools
       // Convert to model and add to the collection
       $coll = new Collection();
       foreach ($array as $item) {
-         $model = new $pModelClass;
+         $model = new $pModelClass();
          $model->fill($item);
          $coll->add($model);
       }

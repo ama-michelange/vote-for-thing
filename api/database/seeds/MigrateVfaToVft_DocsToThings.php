@@ -15,7 +15,7 @@ class MigrateVfaToVft_DocsToThings extends MigrateVfaToVft_Base
     * Convert VFA Entities Collections to VFT Entities and save it.
     * @param Collection $pVfaModels
     */
-   protected function saveTo(Collection $pVfaModels) : void
+   protected function saveTo(Collection $pVfaModels): void
    {
       // Search comic category
       $catComic = null;
@@ -28,5 +28,4 @@ class MigrateVfaToVft_DocsToThings extends MigrateVfaToVft_Base
       // Convert and save to Things
       VftMigrateTools::saveToThings($pVfaModels, $catComic);
    }
-
 }

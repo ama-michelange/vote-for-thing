@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Log;
 abstract class TestCase extends BaseTestCase
 {
    use CreatesApplication;
-//, DatabaseMigrations;
+   //, DatabaseMigrations;
 
-//   protected function setUp()
-//   {
-//      parent::setUp();
-//      Log::debug('>>> Tests\TestCase->setUp : ' . get_class($this));
-////        Artisan::call('db:seed', [ '--class' => 'UsersTableSeeder' ]);
-////      Artisan::call('db:seed');
-////      Log::debug('<<< Tests\TestCase->setUp : ' . get_class($this));
-//   }
+   //   protected function setUp()
+   //   {
+   //      parent::setUp();
+   //      Log::debug('>>> Tests\TestCase->setUp : ' . get_class($this));
+   ////        Artisan::call('db:seed', [ '--class' => 'UsersTableSeeder' ]);
+   ////      Artisan::call('db:seed');
+   ////      Log::debug('<<< Tests\TestCase->setUp : ' . get_class($this));
+   //   }
 }

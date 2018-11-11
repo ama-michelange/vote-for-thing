@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class VftMigrateTools
 {
-
    /**
     * Convert a collection of VFA Doc to VFT Things and save they to database.
     * @param Collection $pDocs
@@ -62,7 +61,7 @@ class VftMigrateTools
    {
       $aField = [
          'id' => $pGroup->group_id,
-         'name' => ConvertHelper::decodeHtmlSpecialChars($pGroup->group_name),
+         'name' => ConvertHelper::decodeHtmlSpecialChars($pGroup->group_name)
       ];
       Group::create($aField);
    }

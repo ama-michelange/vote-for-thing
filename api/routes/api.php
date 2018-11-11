@@ -14,9 +14,8 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+   return $request->user();
 });
-
 
 //Route::group(['middleware' => 'auth:api'], function () {
 //	Route::post('things', 'ThingController@store');
@@ -24,11 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //	Route::delete('things/{thing}', 'ThingController@destroy');
 //});
 
-
 Route::group(['middleware' => 'api'], function () {
-	Route::get('things', 'ThingController@index');
-	Route::get('things/search', 'ThingController@search');
-	Route::get('things/{thing}', 'ThingController@show');
+   Route::get('things', 'ThingController@index');
+   Route::get('things/search', 'ThingController@search');
+   Route::get('things/{thing}', 'ThingController@show');
 });
-
-

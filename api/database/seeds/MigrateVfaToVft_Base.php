@@ -24,12 +24,11 @@ abstract class MigrateVfaToVft_Base extends Seeder
       return $this->vftModelClass;
    }
 
-
    /**
     * Convert VFA Entities Collections to VFT Entities and save it.
     * @param Collection $pVfaModels
     */
-   abstract protected function saveTo(Collection $pVfaModels) : void;
+   abstract protected function saveTo(Collection $pVfaModels): void;
 
    /**
     * Run the database seeds.
@@ -64,5 +63,4 @@ abstract class MigrateVfaToVft_Base extends Seeder
       // Convert and save
       $this->saveTo($vfaModels);
    }
-
 }

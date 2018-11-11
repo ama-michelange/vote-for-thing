@@ -142,7 +142,10 @@ abstract class ApiController extends LaravelController
    {
       $build = $this->buildQueryIndex();
       $items = $build['limit']
-         ? $build['query']->skip($build['skip'])->limit($build['limit'])->get($build['fields'])
+         ? $build['query']
+            ->skip($build['skip'])
+            ->limit($build['limit'])
+            ->get($build['fields'])
          : $build['query']->get($build['fields']);
       return $this->respondWithCollection($items, $build['skip'], $build['limit']);
    }
@@ -160,7 +163,7 @@ abstract class ApiController extends LaravelController
 
       $aWiths = $this->getEagerLoad();
 
-      $skip = (int)$this->request->input('skip', 0);
+      $skip = (int) $this->request->input('skip', 0);
       $build['skip'] = $skip;
       $limit = $this->calculateLimit();
       $build['limit'] = $limit;
@@ -170,10 +173,12 @@ abstract class ApiController extends LaravelController
 
       $query = $this->model->query()->with($aWiths);
       foreach ($aSort as $sortBy) {
-         $query->when(in_array($sortBy, $aDesc),
+         $query->when(
+            in_array($sortBy, $aDesc),
             function ($pQ) use ($sortBy) {
                return $pQ->orderBy($sortBy, 'desc');
-            }, function ($pQ) use ($sortBy) {
+            },
+            function ($pQ) use ($sortBy) {
                return $pQ->orderBy($sortBy, 'asc');
             }
          );
@@ -190,14 +195,20 @@ abstract class ApiController extends LaravelController
       // Log::debug("Request->fullUrl = " . $this->request->fullUrl());
       $build = $this->buildQuerySearch();
       if (isset($build['error'])) {
-         return $this->errorWrongArgs(['type' => 'Wrong Arguments', 'detail' => $build['error']]);
+         return $this->errorWrongArgs([
+            'type' => 'Wrong Arguments',
+            'detail' => $build['error']
+         ]);
       }
-//        $debug = $build['limit']
-//            ? $build['query']->skip($build['skip'])->limit($build['limit'])->toSql()
-//            : $build['query']->toSql();
-//        Log::debug("SQL : $debug");
+      //        $debug = $build['limit']
+      //            ? $build['query']->skip($build['skip'])->limit($build['limit'])->toSql()
+      //            : $build['query']->toSql();
+      //        Log::debug("SQL : $debug");
       $items = $build['limit']
-         ? $build['query']->skip($build['skip'])->limit($build['limit'])->get($build['fields'])
+         ? $build['query']
+            ->skip($build['skip'])
+            ->limit($build['limit'])
+            ->get($build['fields'])
          : $build['query']->get($build['fields']);
       return $this->respondWithCollection($items, $build['skip'], $build['limit']);
    }
@@ -238,23 +249,33 @@ abstract class ApiController extends LaravelController
       foreach ($paWheres as $awhere) {
          // Log::debug("=== awhere : " . json_encode($awhere));
          if (isset($awhere['column2'])) {
-            $pQuery->whereColumn($awhere{'column'}, $awhere['operator'], $awhere['column2'], $awhere['boolean']);
+            $pQuery->whereColumn($awhere['column'], $awhere['operator'], $awhere['column2'], $awhere['boolean']);
          } elseif (isset($awhere['date'])) {
             switch ($awhere['date']) {
                case 'date':
-                  $pQuery->whereDate($awhere{'column'}, $awhere['operator'], $awhere['value'], $awhere['boolean']);
+                  $pQuery->whereDate($awhere['column'], $awhere['operator'], $awhere['value'], $awhere['boolean']);
                   break;
                case 'day':
-                  $pQuery->whereDay($awhere{'column'}, $awhere['operator'], str_pad($awhere['value'], 2, '0', STR_PAD_LEFT), $awhere['boolean']);
+                  $pQuery->whereDay(
+                     $awhere['column'],
+                     $awhere['operator'],
+                     str_pad($awhere['value'], 2, '0', STR_PAD_LEFT),
+                     $awhere['boolean']
+                  );
                   break;
                case 'month':
-                  $pQuery->whereMonth($awhere{'column'}, $awhere['operator'], str_pad($awhere['value'], 2, '0', STR_PAD_LEFT), $awhere['boolean']);
+                  $pQuery->whereMonth(
+                     $awhere['column'],
+                     $awhere['operator'],
+                     str_pad($awhere['value'], 2, '0', STR_PAD_LEFT),
+                     $awhere['boolean']
+                  );
                   break;
                case 'year':
-                  $pQuery->whereYear($awhere{'column'}, $awhere['operator'], $awhere['value'], $awhere['boolean']);
+                  $pQuery->whereYear($awhere['column'], $awhere['operator'], $awhere['value'], $awhere['boolean']);
                   break;
                case 'time':
-                  $pQuery->whereTime($awhere{'column'}, $awhere['operator'], $awhere['value'], $awhere['boolean']);
+                  $pQuery->whereTime($awhere['column'], $awhere['operator'], $awhere['value'], $awhere['boolean']);
                   break;
             }
          } else {
@@ -266,16 +287,16 @@ abstract class ApiController extends LaravelController
                case '<=':
                case '<>':
                case 'like':
-                  $pQuery->where($awhere{'column'}, $awhere['operator'], $awhere['value'], $awhere['boolean']);
+                  $pQuery->where($awhere['column'], $awhere['operator'], $awhere['value'], $awhere['boolean']);
                   break;
                case 'null':
-                  $pQuery->whereNull($awhere{'column'}, $awhere['boolean'], $awhere['not']);
+                  $pQuery->whereNull($awhere['column'], $awhere['boolean'], $awhere['not']);
                   break;
                case 'in':
-                  $pQuery->whereIn($awhere{'column'}, $awhere['value'], $awhere['boolean'], $awhere['not']);
+                  $pQuery->whereIn($awhere['column'], $awhere['value'], $awhere['boolean'], $awhere['not']);
                   break;
                case 'between':
-                  $pQuery->whereBetween($awhere{'column'}, $awhere['value'], $awhere['boolean'], $awhere['not']);
+                  $pQuery->whereBetween($awhere['column'], $awhere['value'], $awhere['boolean'], $awhere['not']);
                   break;
             }
          }
@@ -288,7 +309,13 @@ abstract class ApiController extends LaravelController
       $aWhere = null;
       if (is_string($pExpr) && strlen($pExpr) > 0) {
          $aExpr = explode(' ', $pExpr);
-         $aWhere = array('column' => $pField, 'operator' => '=', 'value' => null, 'boolean' => 'and', 'not' => false);
+         $aWhere = array(
+            'column' => $pField,
+            'operator' => '=',
+            'value' => null,
+            'boolean' => 'and',
+            'not' => false
+         );
          $index = 0;
          foreach ($aExpr as $expr) {
             $aWhere = $this->calculateWhereExpression($aWhere, $expr, $index);
@@ -414,8 +441,8 @@ abstract class ApiController extends LaravelController
       }
       $pos = strpos($pExpr, '[');
       $pos2 = strpos($pExpr, ']');
-      if (($pos !== false) && ($pos2 !== false)) {
-         if (($pos === 0) && ($pos2 === strlen($pExpr) - 1)) {
+      if ($pos !== false && $pos2 !== false) {
+         if ($pos === 0 && $pos2 === strlen($pExpr) - 1) {
             $exp = substr($pExpr, 1, $pos2 - 1);
             $pArray['value'] = explode(',', $exp);
             return $pArray;
@@ -423,8 +450,8 @@ abstract class ApiController extends LaravelController
       }
       $pos = strpos($pExpr, '(');
       $pos2 = strpos($pExpr, ')');
-      if (($pos !== false) && ($pos2 !== false)) {
-         if (($pos === 0) && ($pos2 === strlen($pExpr) - 1)) {
+      if ($pos !== false && $pos2 !== false) {
+         if ($pos === 0 && $pos2 === strlen($pExpr) - 1) {
             $exp = substr($pExpr, 1, $pos2 - 1);
             $pArray['value'] = explode(',', $exp);
             return $pArray;
@@ -747,8 +774,8 @@ abstract class ApiController extends LaravelController
       return $this->respondWithArray([
          'error' => [
             'http_code' => $this->statusCode,
-            'message' => $message,
-         ],
+            'message' => $message
+         ]
       ]);
    }
 
@@ -892,7 +919,10 @@ abstract class ApiController extends LaravelController
          $this->setStatusCode(206);
       }
       if ($this->request->has('use_as_id')) {
-         return $this->model->with($with)->where($this->request->input('use_as_id'), '=', $id)->first($afields);
+         return $this->model
+            ->with($with)
+            ->where($this->request->input('use_as_id'), '=', $id)
+            ->first($afields);
       }
 
       return $this->model->with($with)->find($id, $afields);
@@ -915,9 +945,9 @@ abstract class ApiController extends LaravelController
     */
    protected function calculateLimit()
    {
-      $limit = (int)$this->request->input('limit', $this->defaultLimit);
+      $limit = (int) $this->request->input('limit', $this->defaultLimit);
 
-      return ($this->maximumLimit && $this->maximumLimit < $limit) ? $this->maximumLimit : $limit;
+      return $this->maximumLimit && $this->maximumLimit < $limit ? $this->maximumLimit : $limit;
    }
 
    /**
@@ -944,7 +974,7 @@ abstract class ApiController extends LaravelController
       if (isset($pData[$pKey])) {
          $value = $pData[$pKey];
       }
-      if ((null == $value) && isset($pItem->$pKey)) {
+      if (null == $value && isset($pItem->$pKey)) {
          $value = $pItem->$pKey;
       }
       return $value;

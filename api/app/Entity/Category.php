@@ -20,7 +20,7 @@ class Category extends Model
     */
    public function things()
    {
-//      return $this->hasMany(Thing::class);
+      //      return $this->hasMany(Thing::class);
       return $this->hasMany('App\Entity\Thing');
    }
 }

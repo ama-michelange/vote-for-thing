@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Illuminate\Database\Eloquent\Model;
 
-
 /**
  * Entity Model Thing.
  * <ul>Fields :
@@ -29,7 +28,7 @@ class Thing extends Model
     */
    public function category()
    {
-//      return $this->hasOne('App\Entity\Category');
+      //      return $this->hasOne('App\Entity\Category');
       return $this->belongsTo('App\Entity\Category');
    }
 }
