@@ -1,0 +1,40 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Compiled output
+/dist-server
+/tmp
+/out-tsc
+/dist
+
+# Dependencies
+/node_modules
+/vendor
+
+# IDEs and editors
+/.idea
+*.iml
+/.vscode
+/.vagrant
+.project
+.classpath
+.settings/
+.c9/
+*.launch
+*.sublime-workspace
+
+# Laravel
+/public/hot
+/public/storage
+/storage/*.key
+
+# Misc / Cache
+npm-debug.log
+yarn-error.log
+/.sass-cache
+/coverage
+/temp
+.phpunit.result.cache
+
+# Environment
+.env
+
