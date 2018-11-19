@@ -1,7 +1,7 @@
 export const environmentShared = {
    title: {
-      short: "VFT",
-      medium: "Vote4Things",
+      short: "V4T",
+      medium: "Vote4T",
       long: "Vote For Things"
    }
 };

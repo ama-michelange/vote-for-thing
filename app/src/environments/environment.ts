@@ -6,7 +6,8 @@ import { environmentShared } from "./environment.shared";
 
 export const environment = {
    production: false,
-   shared: environmentShared,
+   apiBase: "/api",
+   shared: environmentShared
 };
 
 /*
