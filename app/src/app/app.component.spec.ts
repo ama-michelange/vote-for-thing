@@ -1,31 +1,40 @@
-import { TestBed, async } from "@angular/core/testing";
+import { async, getTestBed, TestBed } from "@angular/core/testing";
+import { Title } from "@angular/platform-browser";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterTestingModule } from "@angular/router/testing";
+import { environment } from "@AppEnvironment";
 import { AppComponent } from "./app.component";
+import { NavigationComponent } from "./components/navigation/navigation.component";
+import { MaterialModule } from "./shared";
 
-describe("AppComponent", () => {
+describe("Given AppComponent", () => {
+   let injector: TestBed;
+   let serviceTitle: Title;
+
    beforeEach(async(() => {
       TestBed.configureTestingModule({
-         imports: [RouterTestingModule],
-         declarations: [AppComponent]
+         imports: [RouterTestingModule, MaterialModule, NoopAnimationsModule],
+         declarations: [AppComponent, NavigationComponent]
       }).compileComponents();
+      injector = getTestBed();
+      serviceTitle = injector.get(Title);
    }));
 
-   it("should create the app", () => {
+   it("Then it should create the app", () => {
       const fixture = TestBed.createComponent(AppComponent);
       const app = fixture.debugElement.componentInstance;
       expect(app).toBeTruthy();
    });
 
-   it(`should have as title 'vft-app'`, () => {
-      const fixture = TestBed.createComponent(AppComponent);
-      const app = fixture.debugElement.componentInstance;
-      expect(app.title).toEqual("vft-app");
+   it(`Then it should have set the browser title like the environment variable 'short'`, () => {
+      TestBed.createComponent(AppComponent);
+      expect(serviceTitle.getTitle()).toEqual(environment.shared.title.short);
    });
 
-   it("should render title in a h1 tag", () => {
+   it("Then it should render a 'app-navigation' tag", () => {
       const fixture = TestBed.createComponent(AppComponent);
       fixture.detectChanges();
       const compiled = fixture.debugElement.nativeElement;
-      expect(compiled.querySelector("h1").textContent).toContain("Welcome to vft-app!");
+      expect(compiled.querySelector("app-navigation")).toBeDefined();
    });
 });

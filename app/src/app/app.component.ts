@@ -8,9 +8,7 @@ import { environment } from "@AppEnvironment";
    styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-   title: string;
    public constructor(private titleService: Title) {
-      titleService.setTitle(environment.shared.title.long);
-      this.title = titleService.getTitle();
+      this.titleService.setTitle(environment.shared.title.short);
    }
 }
