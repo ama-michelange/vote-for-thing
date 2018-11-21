@@ -1,0 +1,9 @@
+{
+   "/api/*": {
+      "target": "http://my-apache:81",
+      "target-json-server": "http://localhost:3000",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
+   }
+}
