@@ -124,7 +124,7 @@ export class ThingsDataSource extends DataSource<Thing> {
          const isAsc = this.sort.direction === "asc";
          switch (this.sort.active) {
             case "title":
-               return compare(a.title, b.title, isAsc);
+               return compare(a.lib_title, b.lib_title, isAsc);
             case "id":
                return compare(+a.id, +b.id, isAsc);
             default:

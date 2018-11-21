@@ -20,7 +20,7 @@ export class ThingsComponent implements OnInit {
    dataSource: ThingsDataSource;
 
    /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-   displayedColumns = ["id", "title"];
+   displayedColumns = ["image_url", "title"];
 
    constructor(private thingsQuery: ThingsQuery, private thingsService: ThingsService) {}
 
