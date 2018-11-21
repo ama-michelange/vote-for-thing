@@ -1,8 +1,11 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ID } from "@datorama/akita";
 import { createThing, Thing } from "./thing.model";
 import { ThingsStore } from "./things.store";
+import { ThingDataService, ApiThings } from "./thing-data.service";
+import { map, catchError } from "rxjs/operators";
+import { of } from "rxjs";
 
 const EXAMPLE_DATA: Thing[] = [
    createThing({ id: 1, title: "Hydrogen" }),
@@ -40,11 +43,34 @@ const EXAMPLE_DATA: Thing[] = [
 ];
 @Injectable({ providedIn: "root" })
 export class ThingsService {
-   constructor(private thingsStore: ThingsStore, private http: HttpClient) {}
+   constructor(private thingsStore: ThingsStore, private httpService: ThingDataService) {}
 
    get() {
+      this.httpService
+         .getAll()
+         .pipe(
+            map((results: ApiThings | HttpErrorResponse) => {
+               if (results["error"]) {
+                  // this.errorService.create(results as Api.Error);
+                  console.log("ThingsService ERROR", results);
+                  this.thingsStore.setError(results);
+                  return of(null);
+               } else {
+                  const ret = (results as ApiThings).data;
+                  this.thingsStore.set(ret);
+                  return ret;
+               }
+            })
+         )
+         .subscribe
+         // {
+         // complete() {
+         // thisClass.endLoad();
+         // }
+         // }
+         ();
       // this.http.get("https://akita.com").subscribe(entities => this.thingsStore.set(entities));
-      setTimeout(() => this.thingsStore.set(EXAMPLE_DATA), 1000);
+      // setTimeout(() => this.thingsStore.set(EXAMPLE_DATA), 1000);
    }
 
    add(thing: Thing) {

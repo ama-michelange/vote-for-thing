@@ -36,7 +36,11 @@ export class ThingDataService {
          map(response => {
             return response.body;
          }),
-         catchError(error => of(error))
+         catchError(error => {
+            console.log("ThingDataService ERROR", error);
+            console.log("ThingDataService ERROR.status", error.status);
+            return of(error);
+         })
       );
    }
 
