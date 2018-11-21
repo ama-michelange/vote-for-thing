@@ -1,13 +1,12 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { LayoutNavigationComponent } from "./layout-nav/layout-nav.component";
-import { MaterialModule } from "./material.module";
 import { RouterModule } from "@angular/router";
+import { LayoutNavigationComponent } from "./components/layout-nav/layout-nav.component";
 
 const COMPONENTS = [LayoutNavigationComponent];
 
 @NgModule({
-  imports: [CommonModule, MaterialModule, RouterModule],
+  imports: [CommonModule, RouterModule],
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
