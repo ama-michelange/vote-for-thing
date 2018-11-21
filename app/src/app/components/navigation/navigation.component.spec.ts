@@ -11,7 +11,6 @@ describe("Given NavigationComponent", () => {
    beforeEach(async(() => {
       TestBed.configureTestingModule({
          declarations: [NavigationComponent],
-         // imports: [NoopAnimationsModule, LayoutModule, MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule]
          imports: [RouterTestingModule, NoopAnimationsModule, MaterialModule]
       }).compileComponents();
    }));
