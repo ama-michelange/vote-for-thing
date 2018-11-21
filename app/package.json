@@ -4,8 +4,11 @@
    "scripts": {
       "ng": "ng",
       "serve": "ng serve",
+      "serve-proxy": "ng serve --proxy-config proxy.conf.json",
       "build": "ng build",
       "test": "ng test",
+      "test-dry": "ng test --watch=false",
+      "test-dry-coverage": "ng test --watch=false --code-coverage",
       "lint": "ng lint",
       "e2e": "ng e2e",
       "prettier": "prettier",
