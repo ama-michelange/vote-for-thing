@@ -163,7 +163,7 @@ abstract class ApiController extends LaravelController
 
       $aWiths = $this->getEagerLoad();
 
-      $skip = (int) $this->request->input('skip', 0);
+      $skip = (int)$this->request->input('skip', 0);
       $build['skip'] = $skip;
       $limit = $this->calculateLimit();
       $build['limit'] = $limit;
@@ -216,7 +216,7 @@ abstract class ApiController extends LaravelController
    protected function buildQuerySearch()
    {
       $aSearch = $this->calculateSearch();
-      // Log::debug("aSearch : " . json_encode($aSearch));
+      Log::debug("aSearch : " . json_encode($aSearch));
       if (empty($aSearch)) {
          return array('error' => 'No known field !');
       }
@@ -483,6 +483,7 @@ abstract class ApiController extends LaravelController
          $searchable[] = $this->model->getCreatedAtColumn();
          $searchable[] = $this->model->getUpdatedAtColumn();
       }
+      Log::debug("searchable : " . print_r($searchable, true));
       return $searchable;
    }
 
@@ -597,13 +598,20 @@ abstract class ApiController extends LaravelController
    public function show($id)
    {
       $with = $this->getEagerLoad();
+//      Log::debug("================================ WITH");
+//      Log::debug(print_r($with, true));
 
       $item = $this->findItem($id, $with);
       if (!$item) {
          return $this->errorNotFound();
       }
+//      Log::debug("================================ ITEM");
+//      Log::debug(print_r($item, true));
 
-      return $this->respondWithItem($item);
+      $ret = $this->respondWithItem($item);
+//      Log::debug("================================ DATA");
+      Log::debug(print_r($ret->original, true));
+      return $ret;
    }
 
    /**
@@ -718,9 +726,7 @@ abstract class ApiController extends LaravelController
    protected function respondWithItem($item)
    {
       $resource = new Item($item, $this->transformer, $this->resourceKeySingular);
-
       $rootScope = $this->prepareRootScope($resource);
-
       return $this->respondWithArray($rootScope->toArray());
    }
 
@@ -945,7 +951,7 @@ abstract class ApiController extends LaravelController
     */
    protected function calculateLimit()
    {
-      $limit = (int) $this->request->input('limit', $this->defaultLimit);
+      $limit = (int)$this->request->input('limit', $this->defaultLimit);
 
       return $this->maximumLimit && $this->maximumLimit < $limit ? $this->maximumLimit : $limit;
    }

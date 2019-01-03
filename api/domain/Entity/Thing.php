@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Entity;
-
-use Illuminate\Database\Eloquent\Model;
+namespace Domain\Entity;
 
 /**
  * Entity Model Thing.
@@ -18,17 +16,29 @@ use Illuminate\Database\Eloquent\Model;
  * <li>date('legal')->nullable()</li>
  * <li>text('description')->nullable()</li>
  * <li>timestamps()</li>
- *
- * @package App\Entity
+ * </ul>
  */
-class Thing extends Model
+class Thing extends Entity
 {
+   protected $fillable = [
+      'title',
+      'lib_title',
+      'proper_title',
+      'number',
+      'image_url',
+      'description_url',
+      'legal',
+      'description'
+   ];
+   
+   protected $associated = ['category'];
+
    /**
     * Get the category record associated with the thing.
     */
    public function category()
    {
-      //      return $this->hasOne('App\Entity\Category');
-      return $this->belongsTo('App\Entity\Category');
+      return $this->belongsTo('Domain\Entity\Category');
    }
+
 }

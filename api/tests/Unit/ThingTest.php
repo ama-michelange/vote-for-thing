@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Entity\Category;
-use App\Entity\Thing;
+use Domain\Entity\Category;
+use Domain\Entity\Thing;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -156,5 +156,53 @@ class ThingTest extends TestCase
          ->get();
       $this->traceThingsWhere($things, "Thing::where('lib_title', 'like', '%é%')->orderBy('lib_title')->orderBy('number', 'asc')->get()");
       $this->assertNotEmpty($things);
+   }
+
+   private function traceThingsMessage($pThings, $pMessage)
+   {
+      $cpt = 0;
+      Log::debug(sprintf('%s : %s', str_repeat('=', 20), $pMessage));
+      foreach ($pThings as $value) {
+         $cpt++;
+         Log::debug(sprintf('%d) %s %s : %s - %s', $cpt, str_repeat('>', 5), $value->lib_title, $value->title, $value->number));
+         Log::debug(print_r($value, true));
+         Log::debug(sprintf('%d) %s', $cpt, str_repeat('<', 10)));
+      }
+   }
+
+   public function testSelect()
+   {
+      $things = Thing::where('lib_title', 'Batchalo')->select()->get();
+      $this->traceThingsMessage($things, "Thing::where('lib_title', 'Batchalo')->select()->get()");
+      $this->assertCount(1, $things);
+
+      $things = Thing::where('lib_title', 'Batchalo')->select(['lib_title', 'id', 'image_url'])->get();
+      $this->traceThingsMessage($things, "Thing::where('lib_title', 'Batchalo')->select(['lib_title','id','image_url'])->get()");
+      $this->assertCount(1, $things);
+   }
+
+   public function testAttributesToArray()
+   {
+      $thing = new Thing();
+      $attributes = $thing->attributesToArray();
+      Log::debug(sprintf('%s : %s', str_repeat('=', 20), "thing"));
+      Log::debug(print_r($thing, true));
+      Log::debug(sprintf('%s : %s', str_repeat('=', 20), "thing->getVisible()"));
+      Log::debug(print_r($thing->getVisible(), true));
+
+      $diff_1 = array_diff(['id', 'title'], $thing->getVisible());
+      Log::debug(sprintf('%s : %s', str_repeat('=', 20), "diff_1"));
+      Log::debug(print_r($diff_1, true));
+      $this->assertCount(0, $diff_1);
+
+      $diff_2 = array_diff(['id', 'poule', 'title', 'papa'], $thing->getVisible());
+      Log::debug(sprintf('%s : %s', str_repeat('=', 20), "diff_2"));
+      Log::debug(print_r($diff_2, true));
+      $this->assertCount(2, $diff_2);
+
+      Log::debug(sprintf('%s : %s', str_repeat('=', 20), "testAttributesToArray"));
+      Log::debug(print_r($attributes, true));
+      $this->assertNotNull($attributes);
+
    }
 }

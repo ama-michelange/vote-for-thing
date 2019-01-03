@@ -1,6 +1,6 @@
 <?php
 
-use App\Entity\Category;
+use Domain\Entity\Category;
 use Illuminate\Database\Seeder;
 
 class InitDatabaseSeeder_CategoriesTable extends Seeder

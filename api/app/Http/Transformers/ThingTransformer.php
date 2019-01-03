@@ -1,11 +1,15 @@
 <?php
 namespace App\Http\Transformers;
 
-use App\Entity\Thing;
+use Domain\Entity\Thing;
 use League\Fractal\TransformerAbstract;
 
 class ThingTransformer extends TransformerAbstract
 {
+   protected $availableIncludes = [
+      'category'
+   ];
+
    /**
     * Turn this item object into a generic array.
     *
@@ -49,5 +53,17 @@ class ThingTransformer extends TransformerAbstract
          $ret['updated_at'] = (string) $item->updated_at;
       }
       return $ret;
+   }
+
+   /**
+    * Include Category
+    *
+    * @param \Domain\Entity\Thing $thing
+    * @return \League\Fractal\Resource\Item
+    */
+   public function includeCategory(Thing $thing)
+   {
+      $category = $thing->category;
+      return $this->item($category, new CategoryTransformer());
    }
 }

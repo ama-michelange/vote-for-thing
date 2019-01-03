@@ -148,14 +148,17 @@ return [
       /*
        * Package Service Providers...
        */
+// Inutile mais je ne sais pas encore pourquoi !!!     Spatie\Permission\PermissionServiceProvider::class,
 
       /*
        * Application Service Providers...
        */
+      App\Providers\V4TPassportServiceProvider::class,
       App\Providers\AppServiceProvider::class,
       App\Providers\AuthServiceProvider::class,
       // App\Providers\BroadcastServiceProvider::class,
       App\Providers\EventServiceProvider::class,
+      App\Providers\ErrorHandlerServiceProvider::class,
       App\Providers\RouteServiceProvider::class
    ],
 
@@ -182,6 +185,8 @@ return [
       'Cookie' => Illuminate\Support\Facades\Cookie::class,
       'Crypt' => Illuminate\Support\Facades\Crypt::class,
       'DB' => Illuminate\Support\Facades\DB::class,
+      'DingoApi' => Dingo\Api\Facade\API::class,
+      'DingoRoute' => Dingo\Api\Facade\Route::class,
       'Eloquent' => Illuminate\Database\Eloquent\Model::class,
       'Event' => Illuminate\Support\Facades\Event::class,
       'File' => Illuminate\Support\Facades\File::class,

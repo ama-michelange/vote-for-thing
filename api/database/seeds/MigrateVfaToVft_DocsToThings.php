@@ -1,8 +1,8 @@
 <?php
 
-use App\Entity\Category;
-use App\Entity\Thing;
 use App\Entity\V1\Doc;
+use Domain\Entity\Category;
+use Domain\Entity\Thing;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Schema;
 

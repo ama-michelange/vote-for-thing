@@ -1,10 +1,10 @@
 <?php
-use App\Domain\Helper\ConvertHelper;
-use App\Entity\Category;
-use App\Entity\Group;
-use App\Entity\Thing;
 use App\Entity\V1\Doc as VfaDoc;
 use App\Entity\V1\Group as VfaGroup;
+use Domain\Entity\Category;
+use Domain\Entity\Group;
+use Domain\Entity\Thing;
+use Domain\Helper\ConvertHelper;
 use Illuminate\Database\Eloquent\Collection;
 
 class VftMigrateTools
@@ -12,7 +12,7 @@ class VftMigrateTools
    /**
     * Convert a collection of VFA Doc to VFT Things and save they to database.
     * @param Collection $pDocs
-    * @param Category $pCategory
+    * @param \Domain\Entity\Category $pCategory
     */
    public static function saveToThings(Collection $pDocs, Category $pCategory)
    {
@@ -24,7 +24,7 @@ class VftMigrateTools
    /**
     * Convert a VFA v1 Doc to Thing and save it to database.
     * @param VfaDoc $pDoc The document to convert
-    * @param Category $pCategory The category of the new thing
+    * @param \Domain\Entity\Category $pCategory The category of the new thing
     */
    public static function saveToThing(VfaDoc $pDoc, Category $pCategory)
    {

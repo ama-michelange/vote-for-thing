@@ -11,19 +11,25 @@
 |
 */
 
-Route::group([
-   'prefix' => 'auth'
-], function () {
-   Route::post('login', 'AuthController@login');
-   Route::post('signup', 'AuthController@signup');
+Route::group(
+   [
+      'prefix' => 'auth'
+   ],
+   function () {
+      Route::post('login', 'AuthController@login');
+      Route::post('signup', 'AuthController@signup');
 
-   Route::group([
-      'middleware' => 'auth:api'
-   ], function () {
-      Route::get('logout', 'AuthController@logout');
-      Route::get('user', 'AuthController@user');
-   });
-});
+      Route::group(
+         [
+            'middleware' => 'auth:api'
+         ],
+         function () {
+            Route::get('logout', 'AuthController@logout');
+            Route::get('user', 'AuthController@user');
+         }
+      );
+   }
+);
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //   return $request->user();
@@ -35,8 +41,62 @@ Route::group([
 //   Route::delete('things/{thing}', 'ThingController@destroy')->name('vft.things.delete');
 //});
 
-Route::group(['middleware' => 'api'], function () {
-   Route::get('things', 'ThingController@index')->name('vft.things.all');
-   Route::get('things/search', 'ThingController@search')->name('vft.things.search');
-   Route::get('things/{thing}', 'ThingController@show')->name('vft.things.one');
+//Route::group(['middleware' => 'api'], function () {
+//   Route::get('things', 'ThingController@index')->name('vft.things.all');
+//   Route::get('things/search', 'ThingController@search')->name('vft.things.search');
+//   Route::get('things/{thing}', 'ThingController@show')->name('vft.things.one');
+//});
+
+//$api = app('Dingo\Api\Routing\Router');
+DingoRoute::version('v1', function () {
+   DingoRoute::get('things', 'App\Http\Controllers\ThingController@index')->name('v4t.things.all');
+   DingoRoute::get('things/search', 'App\Http\Controllers\ThingController@search')->name('v4t.things.search');
+   DingoRoute::get('things/{thing}', 'App\Http\Controllers\ThingController@show')->name('v4t.things.one');
+
+DingoRoute::get('qthings', 'App\Http\Controllers\Api\ThingQueryController@index')->name('v4t.things.all');
+   DingoRoute::get('qthings/{thing}', 'App\Http\Controllers\Api\ThingQueryController@show')->name('v4t.things.one');
+   DingoRoute::get('qthings/search', 'App\Http\Controllers\Api\ThingQueryController@search')->name('v4t.things.search');
+
+   DingoRoute::group(['middleware' => ['throttle:60,1', 'bindings'], 'namespace' => 'App\Http\Controllers'], function ($api) {
+
+      DingoRoute::get('ping', 'Api\PingController@index')->name('ping');;
+
+//      DingoRoute::get('assets/{uuid}/render', 'Api\Assets\RenderFileController@show');
+
+//      DingoRoute::group(['middleware' => ['auth:api'], ], function ($api) {
+//
+//         DingoRoute::group(['prefix' => 'users'], function ($api) {
+//            DingoRoute::get('/', 'Api\Users\UsersController@index');
+//            DingoRoute::post('/', 'Api\Users\UsersController@store');
+//            DingoRoute::get('/{uuid}', 'Api\Users\UsersController@show');
+//            DingoRoute::put('/{uuid}', 'Api\Users\UsersController@update');
+//            DingoRoute::patch('/{uuid}', 'Api\Users\UsersController@update');
+//            DingoRoute::delete('/{uuid}', 'Api\Users\UsersController@destroy');
+//         });
+//
+//         DingoRoute::group(['prefix' => 'roles'], function ($api) {
+//            DingoRoute::get('/', 'Api\Users\RolesController@index');
+//            DingoRoute::post('/', 'Api\Users\RolesController@store');
+//            DingoRoute::get('/{uuid}', 'Api\Users\RolesController@show');
+//            DingoRoute::put('/{uuid}', 'Api\Users\RolesController@update');
+//            DingoRoute::patch('/{uuid}', 'Api\Users\RolesController@update');
+//            DingoRoute::delete('/{uuid}', 'Api\Users\RolesController@destroy');
+//         });
+//
+//         DingoRoute::get('permissions', 'Api\Users\PermissionsController@index');
+//
+//         DingoRoute::group(['prefix' => 'me'], function($api) {
+//            DingoRoute::get('/', 'Api\Users\ProfileController@index');
+//            DingoRoute::put('/', 'Api\Users\ProfileController@update');
+//            DingoRoute::patch('/', 'Api\Users\ProfileController@update');
+//            DingoRoute::put('/password', 'Api\Users\ProfileController@updatePassword');
+//         });
+//
+//         DingoRoute::group(['prefix' => 'assets'], function($api) {
+//            DingoRoute::post('/', 'Api\Assets\UploadFileController@store');
+//         });
+//
+//      });
+
+   });
 });

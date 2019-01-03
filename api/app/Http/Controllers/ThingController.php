@@ -1,9 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Domain\Helper\ConvertHelper;
-use App\Entity\Thing;
 use App\Http\Transformers\ThingTransformer;
+use Domain\Entity\Thing;
+use Domain\Helper\ConvertHelper;
 
 class ThingController extends ApiController
 {

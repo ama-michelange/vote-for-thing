@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Entity;
-
-use Illuminate\Database\Eloquent\Model;
+namespace Domain\Entity;
 
 /**
  * Entity Model Category.
@@ -10,17 +8,18 @@ use Illuminate\Database\Eloquent\Model;
  * <li>increments('id')</li>
  * <li>string('name', 30)</li>
  * <li>timestamps()</li>
- *
- * @package App\Entity
  */
-class Category extends Model
+class Category extends Entity
 {
+   protected $fillable = [
+      'name'
+   ];
+   
    /**
     * Get the things for the category.
     */
    public function things()
    {
-      //      return $this->hasMany(Thing::class);
-      return $this->hasMany('App\Entity\Thing');
+      return $this->hasMany('Domain\Entity\Thing');
    }
 }

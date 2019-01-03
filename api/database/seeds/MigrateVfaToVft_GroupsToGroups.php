@@ -1,7 +1,7 @@
 <?php
 
-use App\Entity\Group;
 use App\Entity\V1\Group as VfaGroup;
+use Domain\Entity\Group;
 use Illuminate\Database\Eloquent\Collection;
 
 class MigrateVfaToVft_GroupsToGroups extends MigrateVfaToVft_Base

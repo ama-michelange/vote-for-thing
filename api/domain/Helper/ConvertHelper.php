@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Helper;
+namespace Domain\Helper;
 
 class ConvertHelper
 {
