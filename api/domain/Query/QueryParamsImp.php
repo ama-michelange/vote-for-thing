@@ -9,8 +9,7 @@ class QueryParamsImp extends ArrayMapImp implements QueryParams
 {
 
    /**
-    * Return true if all fields are required.
-    * @return bool
+    * {@inheritdoc}
     */
    public function hasAllFields() : bool
    {
@@ -21,8 +20,7 @@ class QueryParamsImp extends ArrayMapImp implements QueryParams
    }
 
    /**
-    * Return true if a limit > 0 exist.
-    * @return bool
+    * {@inheritdoc}
     */
    public function hasLimit() : bool
    {
@@ -33,8 +31,7 @@ class QueryParamsImp extends ArrayMapImp implements QueryParams
    }
 
    /**
-    * Return true if a search exist.
-    * @return bool
+    * {@inheritdoc}
     */
    public function hasSearch() : bool
    {
@@ -45,8 +42,7 @@ class QueryParamsImp extends ArrayMapImp implements QueryParams
    }
 
    /**
-    * Return true if a search exist and it's empty.
-    * @return bool
+    * {@inheritdoc}
     */
    public function hasEmptySearch() : bool
    {

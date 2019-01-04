@@ -27,4 +27,16 @@ interface QueryParams extends ArrayMap
     * @return bool
     */
    public function hasLimit():bool;
+
+   /**
+    * Return true if a search exist.
+    * @return bool
+    */
+   public function hasSearch() : bool;
+
+   /**
+    * Return true if a search exist and it's empty.
+    * @return bool
+    */
+   public function hasEmptySearch() : bool;
 }
