@@ -16,10 +16,10 @@ interface QueryEntityBuilder
 
    /**
     * Verify and build the query with the base parameters.
-    * @return void
+    * @return mixed InfraBuilder | false Return an InfraBuilder instance if the parameters are valid and built, false if the parameters are not valid
     * @throws DomainException In case of error in parameters
     */
-   public function build() : void;
+   public function build();
 
    /**
     * Return the Infra builder.
