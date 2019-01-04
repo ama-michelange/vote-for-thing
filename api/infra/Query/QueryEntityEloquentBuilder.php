@@ -35,11 +35,12 @@ class QueryEntityEloquentBuilder implements QueryEntityBuilder
     * Constructor.
     *
     * @param Entity $entity
+    * @param InfraBuilder $infraBuilder
     */
-   public function __construct(Entity $entity)
+   public function __construct(Entity $entity, InfraBuilder $infraBuilder = null)
    {
       $this->entity = $entity;
-      $this->createInfraBuilder();
+      $this->infraBuilder = $this->createInfraBuilder($infraBuilder);
    }
 
    /**
@@ -54,10 +55,13 @@ class QueryEntityEloquentBuilder implements QueryEntityBuilder
    /**
     * {@inheritdoc}
     */
-   public function build() : void
+   public function build()
    {
-      $this->verify();
-      $this->buildParameters($this->infraBuilder->builder());
+      if ($this->verify()) {
+         $this->buildParams($this->infraBuilder->builder());
+         return $this;
+      }
+      return false;
    }
 
    /**
@@ -70,57 +74,74 @@ class QueryEntityEloquentBuilder implements QueryEntityBuilder
 
    /**
     * Create the builder for the used infrastructure.
-    * @return \Domain\InfraBuilder
+    * @param InfraBuilder $infraBuilder
+    * @return InfraBuilder
     */
-   protected function createInfraBuilder() : InfraBuilder
+   protected function createInfraBuilder(InfraBuilder $infraBuilder = null) : InfraBuilder
    {
-      $this->infraBuilder = new EloquentBuilder($this->entity->query());
-      return $this->infraBuilder;
+      if (is_null($infraBuilder)) {
+         return new EloquentBuilder($this->entity->query());
+      }
+      return $infraBuilder;
    }
 
    /**
     * Verify the base parameters for build the query.
+    * @return bool True if the query is valid
     * @throws DomainException In case of error in parameters
     */
-   protected function verify()
+   protected function verify() : bool
    {
-      if ($this->queryParams) {
-         if (false === $this->queryParams->hasAllFields()) {
-            $diff = array_diff($this->queryParams->getArray(QueryParams::FIELD), $this->entity->getVisible());
-            if (count($diff) > 0) {
-               $mess = 'Unknown field : ' . implode(',', $diff);
-               throw new DomainException($mess);
-            }
-         }
-         if ($this->queryParams->has(QueryParams::INCLUDE)) {
-            $diff = array_diff($this->queryParams->getArray(QueryParams::INCLUDE), $this->entity->getAssociated());
-            if (count($diff) > 0) {
-               $mess = 'Unknown object to include : ' . implode(',', $diff);
-               throw new DomainException($mess);
-            }
-         }
-         if ($this->queryParams->has(QueryParams::SORT)) {
-            $diff = array_diff($this->queryParams->getArray(QueryParams::SORT), $this->entity->getVisible());
-            if (count($diff) > 0) {
-               $mess = 'Unknown field to sort : ' . implode(',', $diff);
-               throw new DomainException($mess);
-            }
-         }
-         if ($this->queryParams->has(QueryParams::DESC)) {
-            $diff = array_diff($this->queryParams->getArray(QueryParams::DESC), $this->entity->getVisible());
-            if (count($diff) > 0) {
-               $mess = 'Unknown field to descendant sort : ' . implode(',', $diff);
-               throw new DomainException($mess);
-            }
+      if (false === isset($this->queryParams)) {
+         return false;
+      }
+      if (false === $this->queryParams->hasAllFields()) {
+         $diff = array_diff($this->queryParams->getArray(QueryParams::FIELD), $this->entity->getVisible());
+         if (count($diff) > 0) {
+            $mess = 'Unknown field : ' . implode(',', $diff);
+            throw new DomainException($mess);
          }
       }
+      if ($this->queryParams->has(QueryParams::INCLUDE)) {
+         $diff = array_diff($this->queryParams->getArray(QueryParams::INCLUDE), $this->entity->getAssociated());
+         if (count($diff) > 0) {
+            $mess = 'Unknown object to include : ' . implode(',', $diff);
+            throw new DomainException($mess);
+         }
+      }
+      if ($this->queryParams->has(QueryParams::SORT)) {
+         $diff = array_diff($this->queryParams->getArray(QueryParams::SORT), $this->entity->getVisible());
+         if (count($diff) > 0) {
+            $mess = 'Unknown field to sort : ' . implode(',', $diff);
+            throw new DomainException($mess);
+         }
+      }
+      if ($this->queryParams->has(QueryParams::DESC)) {
+         $diff = array_diff($this->queryParams->getArray(QueryParams::DESC), $this->entity->getVisible());
+         if (count($diff) > 0) {
+            $mess = 'Unknown field to descendant sort : ' . implode(',', $diff);
+            throw new DomainException($mess);
+         }
+      }
+      if ($this->queryParams->hasSearch()) {
+         if ($this->queryParams->hasEmptySearch()) {
+            throw new DomainException('No field to search');
+         }
+         $fields = array_keys($this->queryParams->getArray(QueryParams::SEARCH));
+         $diff = array_diff($fields, $this->entity->getVisible());
+         if (count($diff) > 0) {
+            $mess = 'Unknown field to search : ' . implode(',', $diff);
+            throw new DomainException($mess);
+         }
+      }
+      return true;
    }
 
    /**
     * Build the query with the given parameters.
     * @param $query Builder
     */
-   protected function buildParameters($query)
+   protected function buildParams($query)
    {
       if (false === $this->queryParams->hasAllFields()) {
          $query->select($this->queryParams->getArray(QueryParams::FIELD));
@@ -132,6 +153,15 @@ class QueryEntityEloquentBuilder implements QueryEntityBuilder
       if ($this->queryParams->has(QueryParams::INCLUDE)) {
          $query->with($this->queryParams->getArray(QueryParams::INCLUDE));
       }
+      $this->buildParamsSortDesc($query);
+   }
+
+   /**
+    * Build the query for Sort and Desc parameters.
+    * @param $query Builder
+    */
+   protected function buildParamsSortDesc($query)
+   {
       if ($this->queryParams->has(QueryParams::SORT)) {
          $aSort = $this->queryParams->getArray(QueryParams::SORT);
          $aDesc = $this->queryParams->getArray(QueryParams::DESC);
