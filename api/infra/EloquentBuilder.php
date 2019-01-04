@@ -4,9 +4,10 @@
 namespace Infra;
 
 
+use Domain\InfraBuilder;
 use Illuminate\Database\Eloquent\Builder;
 
-class EloquentBuilder implements \Domain\InfraBuilder
+class EloquentBuilder implements InfraBuilder
 {
    private $builder;
 
