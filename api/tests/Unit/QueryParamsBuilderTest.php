@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Unit;
+namespace Tests\Unit;
 
 use App\Http\Controllers\Api\QueryParamsBuilder;
 use App\Http\Resources\Resource;
