@@ -2,17 +2,16 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Support\Facades\Log;
 use Tests\DatabaseMigrateTestCase;
 
 class ThingQueryControlerTest extends DatabaseMigrateTestCase
 {
 
    /**
-    * Find all things.
-    *
-    * @return void
+    * @test
     */
-   public function testGetAll()
+   public function getAll()
    {
       $response = $this->json('GET', 'api/qthings');
       $response->assertStatus(200);
@@ -42,7 +41,10 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
       $this->assertTrue(count($a['data']) > 200);
    }
 
-   public function testGetAllWithField()
+   /**
+    * @test
+    */
+   public function getAll_With_Field()
    {
       $response = $this->json('GET', 'api/qthings?field=id,title,number,proper_title');
       $response->assertStatus(206);
@@ -64,19 +66,24 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
       $this->assertTrue(count($a['data']) > 200);
    }
 
-   public function testGetAllWithField_Unknown()
+   /**
+    * @test
+    */
+   public function getAll_With_Unknown_Field()
    {
       $response = $this->json('GET', 'api/qthings?field=id,toto,proper_title,numero');
 //      Log::debug(print_r($response, true));
       $response->assertStatus(400);
       $response->assertJson([
-         'message' => '[Bad request] Unknown field : toto,numero',
+         'message' => '[Bad Request] Unknown field : toto,numero',
          'status_code' => 400
       ]);
    }
 
-
-   public function testGetInclude()
+   /**
+    * @test
+    */
+   public function getAll_With_Include()
    {
       $response = $this->json('GET', 'api/qthings?include=category');
       $response->assertStatus(200);
@@ -115,18 +122,24 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
       $this->assertEquals('comic', $a['data'][0]['category']['data']['name']);
    }
 
-   public function testGetAllWithInclude_Unknown()
+   /**
+    * @test
+    */
+   public function getAll_With_Include_Unknown()
    {
       $response = $this->json('GET', 'api/qthings?include=id,toto,category,numero');
 //      Log::debug(print_r($response, true));
       $response->assertStatus(400);
       $response->assertJson([
-         'message' => '[Bad request] Unknown object to include : id,toto,numero',
+         'message' => '[Bad Request] Unknown object to include : id,toto,numero',
          'status_code' => 400
       ]);
    }
 
-   public function testGetAllWithLimit()
+   /**
+    * @test
+    */
+   public function getAll_With_Limit()
    {
       $response = $this->json('GET', 'api/qthings?limit=5');
       $response->assertStatus(200);
@@ -149,7 +162,10 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
       ]);
    }
 
-   public function testGetAllWithLimitSkip()
+   /**
+    * @test
+    */
+   public function getAll_With_Limit_Skip()
    {
       $response = $this->json('GET', 'api/qthings?limit=5&skip=7');
       $response->assertStatus(200);
@@ -172,8 +188,10 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
       ]);
    }
 
-
-   public function testGetAllWithLimitSkip_BadStringValue()
+   /**
+    * @test
+    */
+   public function getAll_With_Limit_Skip_BadStringValue()
    {
       $response = $this->json('GET', 'api/qthings?limit=foo&skip=toto');
       $response->assertStatus(200);
@@ -191,7 +209,10 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
       ]);
    }
 
-   public function testGetAllWithSort_1()
+   /**
+    * @test
+    */
+   public function getAll_With_Sort_1()
    {
 
       $response = $this->json('GET', 'api/qthings?sort=lib_title,number,proper_title');
@@ -212,7 +233,10 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
 
    }
 
-   public function testGetAllWithSort_2()
+   /**
+    * @test
+    */
+   public function getAll_With_Sort_2()
    {
       $response = $this->json('GET', 'api/qthings?sort=number,lib_title,proper_title');
       $response->assertStatus(200);
@@ -231,18 +255,24 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
       $this->assertEquals('Ailefroide Altitude 3954', $a['data'][4]['title']);
    }
 
-   public function testGetAllWithSort_UnknownField()
+   /**
+    * @test
+    */
+   public function getAll_With_Sort_And_Unknown_Field()
    {
       $response = $this->json('GET', 'api/qthings?sort=toto_title,number,proper_title,foo');
 //      Log::debug(print_r($response, true));
       $response->assertStatus(400);
       $response->assertJson([
-         'message' => '[Bad request] Unknown field to sort : toto_title,foo',
+         'message' => '[Bad Request] Unknown field to sort : toto_title,foo',
          'status_code' => 400
       ]);
    }
 
-   public function testGetAllWithSortDesc_1()
+   /**
+    * @test
+    */
+   public function getAll_With_Sort_And_Desc_1()
    {
       $response = $this->json('GET', 'api/qthings?desc&sort=number,lib_title,proper_title');
       $response->assertStatus(200);
@@ -264,7 +294,10 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
       $this->assertEquals('Le casse', $a['data'][2]['title']);
    }
 
-   public function testGetAllWithSortDesc_2()
+   /**
+    * @test
+    */
+   public function getAll_With_Sort_And_Desc_2()
    {
       $response = $this->json('GET', 'api/qthings?desc=number,lib_title&sort=number,lib_title');
       $response->assertStatus(200);
@@ -286,19 +319,77 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
       $this->assertEquals('Les quatre de Baker Street', $a['data'][2]['title']);
    }
 
-
-   public function testGetAllWithSortDesc_UnknownField()
+   /**
+    * @test
+    */
+   public function getAll_With_Sort_And_Desc_And_Unknown_Field()
    {
       $response = $this->json('GET', 'api/qthings?sort=lib_title&desc=toto_title,number,proper_title,foo');
 //      Log::debug(print_r($response, true));
       $response->assertStatus(400);
       $response->assertJson([
-         'message' => '[Bad request] Unknown field to descendant sort : toto_title,foo',
+         'message' => '[Bad Request] Unknown field to descendant sort : toto_title,foo',
          'status_code' => 400
       ]);
    }
 
-   public function testOne()
+   /**
+    * @test
+    */
+   public function getSearch_With_Like_Begin()
+   {
+      $response = $this->json('GET', 'api/qthings/search?lib_title=hor*');
+      $response->assertStatus(200);
+
+//      Log::debug(print_r($response->getOriginalContent(), true));
+
+      $a = $response->getOriginalContent();
+      $this->assertCount(1, $a);
+      $this->assertTrue(count($a['data']) === 2);
+
+      $this->assertEquals('Horologiom', $a['data'][0]['lib_title']);
+      $this->assertEquals('Horde du Contrevent (La)', $a['data'][1]['lib_title']);
+   }
+
+   /**
+    * @test
+    */
+   public function getSearch_With_Like_Contains()
+   {
+      $response = $this->json('GET', 'api/qthings/search?lib_title=*hor*');
+      $response->assertStatus(200);
+
+      Log::debug(print_r($response->getOriginalContent(), true));
+
+      $a = $response->getOriginalContent();
+      $this->assertCount(1, $a);
+      $this->assertTrue(count($a['data']) === 4);
+
+//      Log::debug(print_r($a['data'][0], true));
+
+      $this->assertEquals('Horologiom', $a['data'][0]['lib_title']);
+      $this->assertEquals('A coucher dehors', $a['data'][1]['lib_title']);
+      $this->assertEquals('Collaboration Horizontale', $a['data'][2]['lib_title']);
+      $this->assertEquals('Horde du Contrevent (La)', $a['data'][3]['lib_title']);
+   }
+
+   /**
+    * @test
+    */
+   public function getSearch_Without_Parameters()
+   {
+      $response = $this->json('GET', 'api/qthings/search');
+      $response->assertStatus(400);
+      $response->assertJson([
+         'message' => '[Bad Request] No field to search',
+         'status_code' => 400
+      ]);
+   }
+
+   /**
+    * @test
+    */
+   public function getId()
    {
       $this->markTestIncomplete(
          'This test has not been implemented yet.'
@@ -326,7 +417,10 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
       ]);
    }
 
-   public function testOneField()
+   /**
+    * @test
+    */
+   public function getId_With_Field()
    {
       $this->markTestIncomplete(
          'This test has not been implemented yet.'

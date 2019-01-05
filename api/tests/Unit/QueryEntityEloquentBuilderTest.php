@@ -78,7 +78,7 @@ class QueryEntityEloquentBuilderTest extends TestCase
       $this->mockDatabaseQueryBuilder = $this->getMockBuilder(QueryBuilder::class)->disableOriginalConstructor()->getMock();
       $this->mockDatabaseEloquentBuilder = $this->getMockBuilder(IlluEloquentBuilder::class)
          ->setConstructorArgs([$this->mockDatabaseQueryBuilder])
-         ->setMethods(['select', 'skip', 'limit', 'with', 'orderBy'])
+         ->setMethods(['select', 'skip', 'limit', 'with', 'orderBy', 'where'])
          ->getMock();
       $this->mockBuilder = new QueryEntityEloquentBuilder($this->realEntity, new EloquentBuilder($this->mockDatabaseEloquentBuilder));
    }
@@ -92,13 +92,40 @@ class QueryEntityEloquentBuilderTest extends TestCase
       $this->assertEquals('Infra\EloquentBuilder', get_class($this->realBuilder->infraBuilder()));
    }
 
-
    /**
     * @test
     */
    public function build_When_Not_Parameter()
    {
       $this->assertFalse($this->realBuilder->build());
+   }
+
+   /**
+    * @test
+    */
+   public function build_When_Verify_Return_True()
+   {
+      $mock = $this->getMockBuilder(QueryEntityEloquentBuilder::class)
+         ->setConstructorArgs([new Thing()])
+         ->setMethods(['verify', 'buildParams'])
+         ->getMock();
+      $mock->expects($this->once())->method('verify')->willReturn(true);
+      $mock->expects($this->once())->method('buildParams');
+      $this->assertNotNull($mock->build());
+   }
+
+   /**
+    * @test
+    */
+   public function build_When_Verify_Return_False()
+   {
+      $mock = $this->getMockBuilder(QueryEntityEloquentBuilder::class)
+         ->setConstructorArgs([new Thing()])
+         ->setMethods(['verify', 'buildParams'])
+         ->getMock();
+      $mock->expects($this->once())->method('verify')->willReturn(false);
+      $mock->expects($this->never())->method('buildParams');
+      $this->assertFalse($mock->build());
    }
 
    /**
@@ -132,6 +159,8 @@ class QueryEntityEloquentBuilderTest extends TestCase
          ->with($this->callback(function ($value) {
             return in_array($value, $this->aVisible);
          }), 'desc');
+      $this->mockDatabaseEloquentBuilder->expects($this->exactly(count($this->aVisible)))
+         ->method('where');
 
       $this->mockBuilder->withParams($queryParams);
       $this->assertNotNull($this->mockBuilder->build());
@@ -191,18 +220,19 @@ class QueryEntityEloquentBuilderTest extends TestCase
       $queryParams->put(QueryParams::INCLUDE, ['foo']);
       $this->mockBuilder->withParams($queryParams)->build();
    }
+
    /**
     * @test
     */
    public function build_When_Sort_With_Mixed_Asc_And_Desc()
    {
       $queryParams = new QueryParamsImp();
-      $queryParams->put(QueryParams::SORT, ['id','title','number']);
+      $queryParams->put(QueryParams::SORT, ['id', 'title', 'number']);
       $queryParams->put(QueryParams::DESC, ['title']);
-      
+
       $this->mockDatabaseEloquentBuilder->expects($this->exactly(3))
          ->method('orderBy')
-         ->withConsecutive(['id','asc'],['title','desc'],['number','asc']);
+         ->withConsecutive(['id', 'asc'], ['title', 'desc'], ['number', 'asc']);
 
       $this->mockBuilder->withParams($queryParams);
       $this->assertNotNull($this->mockBuilder->build());
@@ -263,29 +293,25 @@ class QueryEntityEloquentBuilderTest extends TestCase
    /**
     * @test
     */
-   public function build_When_Verify_Return_True()
+   public function build_When_Search_With_like()
    {
-      $mock = $this->getMockBuilder(QueryEntityEloquentBuilder::class)
-         ->setConstructorArgs([new Thing()])
-         ->setMethods(['verify', 'buildParams'])
-         ->getMock();
-      $mock->expects($this->once())->method('verify')->willReturn(true);
-      $mock->expects($this->once())->method('buildParams');
-      $this->assertNotNull($mock->build());
-   }
+      $queryParams = new QueryParamsImp();
+      $queryParams->put(QueryParams::SEARCH, [
+         'lib_title' => 'ast*',
+         'title' => 'or **ast**',
+         'proper_title' => '*dom*',
+      ]);
 
-   /**
-    * @test
-    */
-   public function build_When_Verify_Return_False()
-   {
-      $mock = $this->getMockBuilder(QueryEntityEloquentBuilder::class)
-         ->setConstructorArgs([new Thing()])
-         ->setMethods(['verify', 'buildParams'])
-         ->getMock();
-      $mock->expects($this->once())->method('verify')->willReturn(false);
-      $mock->expects($this->never())->method('buildParams');
-      $this->assertFalse($mock->build());
+      $this->mockDatabaseEloquentBuilder->expects($this->exactly(3))
+         ->method('where')
+         ->withConsecutive(
+            ['lib_title', 'like', 'ast%', 'and'],
+            ['title', 'like', '%ast%', 'or'],
+            ['proper_title', 'like', '%dom%', 'and']
+         );
+
+      $this->mockBuilder->withParams($queryParams);
+      $this->assertNotNull($this->mockBuilder->build());
    }
 
 

@@ -49,13 +49,13 @@ Route::group(
 
 //$api = app('Dingo\Api\Routing\Router');
 DingoRoute::version('v1', function () {
-   DingoRoute::get('things', 'App\Http\Controllers\ThingController@index')->name('v4t.things.all');
-   DingoRoute::get('things/search', 'App\Http\Controllers\ThingController@search')->name('v4t.things.search');
-   DingoRoute::get('things/{thing}', 'App\Http\Controllers\ThingController@show')->name('v4t.things.one');
+   DingoRoute::get('things', 'App\Http\Controllers\ThingController@index')->name('vft.things.all');
+   DingoRoute::get('things/search', 'App\Http\Controllers\ThingController@search')->name('vft.things.search');
+   DingoRoute::get('things/{thing}', 'App\Http\Controllers\ThingController@show')->name('vft.things.id');
 
-DingoRoute::get('qthings', 'App\Http\Controllers\Api\ThingQueryController@index')->name('v4t.things.all');
-   DingoRoute::get('qthings/{thing}', 'App\Http\Controllers\Api\ThingQueryController@show')->name('v4t.things.one');
+   DingoRoute::get('qthings', 'App\Http\Controllers\Api\ThingQueryController@index')->name('v4t.things');
    DingoRoute::get('qthings/search', 'App\Http\Controllers\Api\ThingQueryController@search')->name('v4t.things.search');
+   DingoRoute::get('qthings/{thing}', 'App\Http\Controllers\Api\ThingQueryController@show')->name('v4t.things.id');
 
    DingoRoute::group(['middleware' => ['throttle:60,1', 'bindings'], 'namespace' => 'App\Http\Controllers'], function ($api) {
 

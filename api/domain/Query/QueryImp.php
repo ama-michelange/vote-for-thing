@@ -53,7 +53,7 @@ class QueryImp implements Query
     */
    public function findCollection(QueryParams $queryParams) : Collection
    {
-      // TODO Action supplémentaire à faire ici
+      // TODO Action supplémentaire à faire ici pour limiter/filtrer par domaine ou projet
 //      $ori = $this->builder()->infraBuilder()->getBuilder();
 //      if (isset($ori)) {
 //         Log::debug('Infra Builder exist');

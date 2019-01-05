@@ -33,7 +33,7 @@ class ErrorHandlerServiceProvider extends ServiceProvider
     public function register()
     {
         app('Dingo\Api\Exception\Handler')->register(function (DomainException $exception) {
-            return $this->response->errorBadRequest('[Bad request] '.$exception->getMessage());
+            return $this->response->errorBadRequest('[Bad Request] '.$exception->getMessage());
         });
 
        // register the error handler for the authentication exception.
