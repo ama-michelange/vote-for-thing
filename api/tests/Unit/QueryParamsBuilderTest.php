@@ -12,6 +12,21 @@ use Tests\TestCase;
 class QueryParamsBuilderTest extends TestCase
 {
    /**
+    * QueryString complete with maximum parameters
+    */
+   const MAXIMUM_PARAMETERS = [
+      'limit' => 21,
+      'skip' => 123,
+      'field' => 'field_one',
+      'include' => 'include_one',
+      'sort' => 'sort_one',
+      'desc' => 'desc_one',
+      'name' => 'name_value',
+      'title' => 'title_value',
+      'use_as_id' => 'use_as_id_value'
+   ];
+
+   /**
     * @var \Illuminate\Http\Request
     */
    protected $request;
@@ -38,6 +53,7 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertFalse($params->has(QueryParams::INCLUDE));
       $this->assertFalse($params->has(QueryParams::SORT));
       $this->assertFalse($params->has(QueryParams::DESC));
+      $this->assertFalse($params->has(QueryParams::USE_AS_ID));
    }
 
    public function testWithLimit()
@@ -313,6 +329,32 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertEquals(['name' => 'name_value', 'title' => 'title_value'], $params->getArray(QueryParams::SEARCH));
    }
 
+   public function testWithUseAsId()
+   {
+      // QueryString empty
+      $params = (new QueryParamsBuilder($this->request))->withUseAsId(13)->build();
+      $this->assertFalse($params->has(QueryParams::USE_AS_ID));
+      $this->assertEquals([], $params->getArray(QueryParams::USE_AS_ID));
+
+      // QueryString with use_as_id and int value
+      $this->request->replace(['use_as_id' => 'one']);
+      $params = (new QueryParamsBuilder($this->request))->withUseAsId(13)->build();
+      $this->assertTrue($params->has(QueryParams::USE_AS_ID));
+      $this->assertEquals(['one', 13], $params->getArray(QueryParams::USE_AS_ID));
+
+      // QueryString with use_as_id and string value
+      $this->request->replace(['use_as_id' => 'one']);
+      $params = (new QueryParamsBuilder($this->request))->withUseAsId('myValue')->build();
+      $this->assertTrue($params->has(QueryParams::USE_AS_ID));
+      $this->assertEquals(['one', 'myValue'], $params->getArray(QueryParams::USE_AS_ID));
+
+      // QueryString with int use_as_id
+      $this->request->replace(['use_as_id' => 123]);
+      $params = (new QueryParamsBuilder($this->request))->withUseAsId('myValue')->build();
+      $this->assertTrue($params->has(QueryParams::USE_AS_ID));
+      $this->assertEquals([123, 'myValue'], $params->getArray(QueryParams::USE_AS_ID));
+   }
+
    public function testForFindCollection()
    {
       // QueryString empty
@@ -323,19 +365,15 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertFalse($params->has(QueryParams::INCLUDE));
       $this->assertFalse($params->has(QueryParams::SORT));
       $this->assertFalse($params->has(QueryParams::DESC));
+      $this->assertFalse($params->has(QueryParams::USE_AS_ID));
+      $this->assertFalse($params->has(QueryParams::SEARCH));
       $this->assertEquals(0, $params->getInt(QueryParams::LIMIT));
       $this->assertEquals(0, $params->getInt(QueryParams::SKIP));
       $this->assertEquals(['*'], $params->getArray(QueryParams::FIELD));
 
-      // QueryString complete
-      $this->request->replace([
-         'limit' => 21,
-         'skip' => 123,
-         'field' => 'field_one',
-         'include' => 'include_one',
-         'sort' => 'sort_one',
-         'desc' => 'desc_one'
-      ]);
+      // QueryString complete with maximum parameters
+      $this->request->replace(self::MAXIMUM_PARAMETERS);
+
       $params = (new QueryParamsBuilder($this->request))->forFindCollection()->build();
       $this->assertTrue($params->has(QueryParams::LIMIT));
       $this->assertTrue($params->has(QueryParams::SKIP));
@@ -343,6 +381,9 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertTrue($params->has(QueryParams::INCLUDE));
       $this->assertTrue($params->has(QueryParams::SORT));
       $this->assertTrue($params->has(QueryParams::DESC));
+      $this->assertFalse($params->has(QueryParams::SEARCH));
+      $this->assertFalse($params->has(QueryParams::USE_AS_ID));
+
       $this->assertEquals(21, $params->getInt(QueryParams::LIMIT));
       $this->assertEquals(123, $params->getInt(QueryParams::SKIP));
       $this->assertEquals(['field_one'], $params->getArray(QueryParams::FIELD));
@@ -362,21 +403,14 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertFalse($params->has(QueryParams::SORT));
       $this->assertFalse($params->has(QueryParams::DESC));
       $this->assertFalse($params->has(QueryParams::SEARCH));
+      $this->assertFalse($params->has(QueryParams::USE_AS_ID));
       $this->assertEquals(0, $params->getInt(QueryParams::LIMIT));
       $this->assertEquals(0, $params->getInt(QueryParams::SKIP));
       $this->assertEquals(['*'], $params->getArray(QueryParams::FIELD));
 
-      // QueryString complete with search
-      $this->request->replace([
-         'limit' => 21,
-         'skip' => 123,
-         'field' => 'field_one',
-         'include' => 'include_one',
-         'sort' => 'sort_one',
-         'desc' => 'desc_one',
-         'name' => 'name_value',
-         'title' => 'title_value'
-      ]);
+      // QueryString complete with maximum parameters
+      $this->request->replace(self::MAXIMUM_PARAMETERS);
+
       $params = (new QueryParamsBuilder($this->request, $this->resource))->forSearchCollection()->build();
       $this->assertTrue($params->has(QueryParams::LIMIT));
       $this->assertTrue($params->has(QueryParams::SKIP));
@@ -385,6 +419,7 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertTrue($params->has(QueryParams::SORT));
       $this->assertTrue($params->has(QueryParams::DESC));
       $this->assertTrue($params->has(QueryParams::SEARCH));
+      $this->assertFalse($params->has(QueryParams::USE_AS_ID));
       $this->assertEquals(21, $params->getInt(QueryParams::LIMIT));
       $this->assertEquals(123, $params->getInt(QueryParams::SKIP));
       $this->assertEquals(['field_one'], $params->getArray(QueryParams::FIELD));
@@ -392,6 +427,38 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertEquals(['sort_one'], $params->getArray(QueryParams::SORT));
       $this->assertEquals(['desc_one'], $params->getArray(QueryParams::DESC));
       $this->assertEquals(['name' => 'name_value', 'title' => 'title_value'], $params->getArray(QueryParams::SEARCH));
+   }
+
+   public function testForFindItem()
+   {
+      // QueryString empty
+      $params = (new QueryParamsBuilder($this->request))->forFindItem(7)->build();
+      $this->assertFalse($params->has(QueryParams::LIMIT));
+      $this->assertFalse($params->has(QueryParams::SKIP));
+      $this->assertTrue($params->has(QueryParams::FIELD));
+      $this->assertFalse($params->has(QueryParams::INCLUDE));
+      $this->assertFalse($params->has(QueryParams::SORT));
+      $this->assertFalse($params->has(QueryParams::DESC));
+      $this->assertFalse($params->has(QueryParams::SEARCH));
+      $this->assertFalse($params->has(QueryParams::USE_AS_ID));
+      $this->assertEquals(['*'], $params->getArray(QueryParams::FIELD));
+
+      // QueryString complete with maximum parameters
+      $this->request->replace(self::MAXIMUM_PARAMETERS);
+
+      $params = (new QueryParamsBuilder($this->request, $this->resource))->forFindItem(7)->build();
+      $this->assertFalse($params->has(QueryParams::LIMIT));
+      $this->assertFalse($params->has(QueryParams::SKIP));
+      $this->assertTrue($params->has(QueryParams::FIELD));
+      $this->assertTrue($params->has(QueryParams::INCLUDE));
+      $this->assertFalse($params->has(QueryParams::SORT));
+      $this->assertFalse($params->has(QueryParams::DESC));
+      $this->assertFalse($params->has(QueryParams::SEARCH));
+      $this->assertTrue($params->has(QueryParams::USE_AS_ID));
+
+      $this->assertEquals(['field_one'], $params->getArray(QueryParams::FIELD));
+      $this->assertEquals(['includeOne'], $params->getArray(QueryParams::INCLUDE));
+      $this->assertEquals(['use_as_id_value', 7], $params->getArray(QueryParams::USE_AS_ID));
    }
 }
 

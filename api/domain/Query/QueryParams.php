@@ -15,6 +15,7 @@ interface QueryParams extends ArrayMap
    const SORT = 'sort';
    const DESC = 'desc';
    const SEARCH = 'search';
+   const USE_AS_ID = 'use_as_id';
 
    /**
     * Return true if all fields are required.
@@ -39,4 +40,10 @@ interface QueryParams extends ArrayMap
     * @return bool
     */
    public function hasEmptySearch() : bool;
+
+   /**
+    * Return true if a key exists to use as ID.
+    * @return bool
+    */
+   public function hasUseAsId() : bool;
 }

@@ -46,6 +46,14 @@ class QueryEntityEloquentAdapter implements QueryEntity
    /**
     * {@inheritdoc}
     */
+   public function builder() : QueryEntityBuilder
+   {
+      return $this->builder;
+   }
+
+   /**
+    * {@inheritdoc}
+    */
    public function findCollection(QueryParams $queryParams) : Collection
    {
       $this->builder->withParams($queryParams)->build();
@@ -55,8 +63,15 @@ class QueryEntityEloquentAdapter implements QueryEntity
    /**
     * {@inheritdoc}
     */
-   public function builder() : QueryEntityBuilder
+   public function findItem($id, QueryParams $queryParams) : Entity
    {
-      return $this->builder;
+      $ret = null;
+      $this->builder->withParams($queryParams)->build();
+      if ($queryParams->hasUseAsId()) {
+         $ret = $this->builder->infraBuilder()->builder()->first();
+      } else {
+         $ret = $this->builder->infraBuilder()->builder()->find($id);
+      }
+      return $ret;
    }
 }

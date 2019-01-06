@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: a454895
- * Date: 22/12/2018
- * Time: 02:36
- */
+
 namespace Domain\Helper;
 
 interface ArrayMap
@@ -32,6 +27,12 @@ interface ArrayMap
     * @return int
     */
    public function getInt($pName) : int;
+
+   /**
+    * @param $pName
+    * @return string
+    */
+   public function getString($pName) : string;
 
    /**
     * @return array

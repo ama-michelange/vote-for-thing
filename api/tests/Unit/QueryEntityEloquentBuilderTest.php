@@ -95,9 +95,25 @@ class QueryEntityEloquentBuilderTest extends TestCase
    /**
     * @test
     */
-   public function build_When_Not_Parameter()
+   public function build_Without_QueryParam()
    {
       $this->assertFalse($this->realBuilder->build());
+   }
+
+   /**
+    * @test
+    */
+   public function build_With_QueryParams_Empty()
+   {
+      $queryParams = new QueryParamsImp();
+      $this->mockBuilder->withParams($queryParams);
+
+      $this->mockDatabaseEloquentBuilder->expects($this->never())->method('select');
+      $this->mockDatabaseEloquentBuilder->expects($this->never())->method('with');
+      $this->mockDatabaseEloquentBuilder->expects($this->never())->method('orderBy');
+      $this->mockDatabaseEloquentBuilder->expects($this->never())->method('where');
+
+      $this->assertNotNull($this->mockBuilder->build());
    }
 
    /**
@@ -141,6 +157,7 @@ class QueryEntityEloquentBuilderTest extends TestCase
       $queryParams->put(QueryParams::SORT, $this->aVisible);
       $queryParams->put(QueryParams::DESC, $this->aVisible);
       $queryParams->put(QueryParams::SEARCH, $this->aSearch);
+      $queryParams->put(QueryParams::USE_AS_ID, [$this->aVisible[0], 'value_' . $this->aVisible[0]]);
 
       $this->mockDatabaseEloquentBuilder->expects($this->once())
          ->method('select')
@@ -159,8 +176,7 @@ class QueryEntityEloquentBuilderTest extends TestCase
          ->with($this->callback(function ($value) {
             return in_array($value, $this->aVisible);
          }), 'desc');
-      $this->mockDatabaseEloquentBuilder->expects($this->exactly(count($this->aVisible)))
-         ->method('where');
+      $this->mockDatabaseEloquentBuilder->expects($this->exactly(count($this->aVisible) + 1))->method('where');
 
       $this->mockBuilder->withParams($queryParams);
       $this->assertNotNull($this->mockBuilder->build());
@@ -312,6 +328,49 @@ class QueryEntityEloquentBuilderTest extends TestCase
 
       $this->mockBuilder->withParams($queryParams);
       $this->assertNotNull($this->mockBuilder->build());
+   }
+
+   /**
+    * @test
+    */
+   public function build_When_UseAsId_With_A_Good_Field()
+   {
+      $queryParams = new QueryParamsImp();
+      $queryParams->put(QueryParams::USE_AS_ID, [$this->aVisible[0], 10]);
+
+      $this->mockDatabaseEloquentBuilder->expects($this->never())->method('select');
+      $this->mockDatabaseEloquentBuilder->expects($this->never())->method('with');
+      $this->mockDatabaseEloquentBuilder->expects($this->never())->method('orderBy');
+      $this->mockDatabaseEloquentBuilder->expects($this->never())->method('where');
+
+      $this->mockBuilder->withParams($queryParams);
+      $this->assertNotNull($this->mockBuilder->build());
+   }
+
+   /**
+    * @test
+    *
+    * @expectedException \DomainException
+    * @expectedExceptionMessage Unknown field to use as id : foo
+    */
+   public function build_When_UseAsId_With_A_Bad_Field()
+   {
+      $queryParams = new QueryParamsImp();
+      $queryParams->put(QueryParams::USE_AS_ID, ['foo', 10]);
+      $this->mockBuilder->withParams($queryParams)->build();
+   }
+
+   /**
+    * @test
+    *
+    * @expectedException \DomainException
+    * @expectedExceptionMessage Use as id : value mandatory
+    */
+   public function build_When_UseAsId_With_A_Good_Field_And_Without_Value()
+   {
+      $queryParams = new QueryParamsImp();
+      $queryParams->put(QueryParams::USE_AS_ID, [$this->aVisible[0]]);
+      $this->mockBuilder->withParams($queryParams)->build();
    }
 
 

@@ -19,8 +19,8 @@ class ThingTest extends TestCase
    {
       parent::setUp();
       //      Log::debug('>>> Tests\ThingTest->setUp : ' . get_class($this));
-      $this->artisan('db:migrate', ['--from' => 'json']);
-      //      $this->artisan('db:migrate', ['--from' => 'json', '--quiet' => true]);
+//      $this->artisan('db:migrate', ['--from' => 'json']);
+      $this->artisan('db:migrate', ['--from' => 'json', '--quiet' => true]);
    }
 
    /**
@@ -34,7 +34,10 @@ class ThingTest extends TestCase
       parent::tearDown();
    }
 
-   public function testDifferenceBetweenFirstOrGet()
+   /**
+    * @testSkipped
+    */
+   public function differenceBetween_First_Get()
    {
       $this->assertNotNull(Thing::where('lib_title', 'Batchalo')->first());
       $this->assertEquals(Thing::class, get_class(Thing::where('lib_title', 'Batchalo')->first()));
@@ -70,7 +73,10 @@ class ThingTest extends TestCase
       );
    }
 
-   public function testDifferenceBetweenFirstOrGetWithOneToMany()
+   /**
+    * @testSkipped
+    */
+   public function differenceBetween_First_Get_With_OneToMany()
    {
       $thing = Thing::where('lib_title', 'Batchalo')->first();
 
@@ -120,7 +126,10 @@ class ThingTest extends TestCase
       }
    }
 
-   public function testWhere()
+   /**
+    * @testSkipped
+    */
+   public function where()
    {
       $things = Thing::where('lib_title', 'Batchalo')->get();
       $this->traceThingsWhere($things, "Thing::where('lib_title', 'Batchalo')->get()");
@@ -170,7 +179,10 @@ class ThingTest extends TestCase
       }
    }
 
-   public function testSelect()
+   /**
+    * @testSkipped
+    */
+   public function select()
    {
       $things = Thing::where('lib_title', 'Batchalo')->select()->get();
       $this->traceThingsMessage($things, "Thing::where('lib_title', 'Batchalo')->select()->get()");
@@ -181,7 +193,10 @@ class ThingTest extends TestCase
       $this->assertCount(1, $things);
    }
 
-   public function testAttributesToArray()
+   /**
+    * @testSkipped
+    */
+   public function attributesToArray()
    {
       $thing = new Thing();
       $attributes = $thing->attributesToArray();
@@ -204,5 +219,55 @@ class ThingTest extends TestCase
       Log::debug(print_r($attributes, true));
       $this->assertNotNull($attributes);
 
+   }
+
+   /**
+    * @test
+    */
+   public function paginate()
+   {
+      $thingsPaginator = Thing::paginate(5);
+      $this->assertCount(5, $thingsPaginator->items());
+//      Log::debug(print_r($thingsPaginator, true));
+//      Log::debug(print_r($thingsPaginator, true));
+      $thingsPaginator->withPath('custom/url');
+
+//      Log::debug('count()' . print_r($thingsPaginator->count(), true));
+//      Log::debug('currentPage()' . print_r($thingsPaginator->currentPage(), true));
+//      Log::debug('firstItem()' . print_r($thingsPaginator->firstItem(), true));
+//      Log::debug('hasMorePages()' . print_r($thingsPaginator->hasMorePages(), true));
+//      Log::debug('lastItem()' . print_r($thingsPaginator->lastItem(), true));
+//      Log::debug('lastPage()' . print_r($thingsPaginator->lastPage(), true));
+//      Log::debug('nextPageUrl()' . print_r($thingsPaginator->nextPageUrl(), true));
+//      Log::debug('onFirstPage()' . print_r($thingsPaginator->onFirstPage(), true));
+//      Log::debug('perPage()' . print_r($thingsPaginator->perPage(), true));
+//      Log::debug('previousPageUrl()' . print_r($thingsPaginator->previousPageUrl(), true));
+//      Log::debug('total()' . print_r($thingsPaginator->total(), true));
+//      Log::debug('url(13)' . print_r($thingsPaginator->url(13), true));
+
+
+   }
+
+   /**
+    * @test
+    */
+   public function paginate_With_All_Parameters()
+   {
+      $thingsPaginator = Thing::paginate(5, ['*'], 'page', 13);
+      $this->assertCount(5, $thingsPaginator->items());
+
+      Log::debug('>>>>>>>>>>>>>>>>>>>>>>>>>>> '."Thing::paginate(5, ['*'], 'page', 13)");
+      Log::debug('count() : ' . print_r($thingsPaginator->count(), true));
+      Log::debug('currentPage() : ' . print_r($thingsPaginator->currentPage(), true));
+      Log::debug('firstItem() : ' . print_r($thingsPaginator->firstItem(), true));
+      Log::debug('hasMorePages() : ' . print_r($thingsPaginator->hasMorePages(), true));
+      Log::debug('lastItem() : ' . print_r($thingsPaginator->lastItem(), true));
+      Log::debug('lastPage() : ' . print_r($thingsPaginator->lastPage(), true));
+      Log::debug('nextPageUrl() : ' . print_r($thingsPaginator->nextPageUrl(), true));
+      Log::debug('onFirstPage() : ' . print_r($thingsPaginator->onFirstPage(), true));
+      Log::debug('perPage() : ' . print_r($thingsPaginator->perPage(), true));
+      Log::debug('previousPageUrl() : ' . print_r($thingsPaginator->previousPageUrl(), true));
+      Log::debug('total() : ' . print_r($thingsPaginator->total(), true));
+      Log::debug('url(13) : ' . print_r($thingsPaginator->url(13), true));
    }
 }

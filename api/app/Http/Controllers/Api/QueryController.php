@@ -204,15 +204,14 @@ abstract class QueryController extends BaseController
     */
    public function show($id)
    {
-      $with = $this->getEagerLoad();
-      $item = $this->findItem($id, $with);
-      if (!$item) {
-         return $this->errorNotFound();
+      $this->queryParams = (new QueryParamsBuilder($this->request, $this->resource))->forFindItem($id)->build();
+      if ($this->queryParams->hasAllFields()) {
+         $this->setStatusCode(200);
+      } else {
+         $this->setStatusCode(206);
       }
-      $ret = $this->respondWithItem($item);
-//      Log::debug("================================ DATA");
-//      Log::debug('ama : '.print_r($ret->original, true));
-      return $ret;
+      $items = $this->queryEntity->findItem($id,$this->queryParams);
+      return $this->respondWithItem($items);
    }
 
    /**
@@ -243,19 +242,17 @@ abstract class QueryController extends BaseController
     * Respond with a given item.
     *
     * @param $item
-    *
     * @return mixed
     */
    protected function respondWithItem($item)
    {
-      return $this->respondWithArray($this->resource->transformCollection($item, $this->queryParams));
+      return $this->respondWithArray($this->resource->transformItem($item, $this->queryParams));
    }
 
    /**
     * Respond with a given collection.
     *
     * @param $collection
-    *     *
     * @return mixed
     */
    protected function respondWithCollection($collection)

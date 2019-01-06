@@ -20,6 +20,7 @@ class QueryParamsBuilder
    protected $aSort;
    protected $aDesc;
    protected $aSearch;
+   protected $aUseAsId;
 
    /**
     * Illuminate\Http\Request instance.
@@ -89,6 +90,19 @@ class QueryParamsBuilder
    }
 
    /**
+    * Short-cut to get the parameters 'field', 'include', 'use_as_id' in the Query String.
+    * @param string|int $id The identifier to find
+    * @return QueryParamsBuilder
+    * @see QueryParamsBuilder::withField()
+    * @see QueryParamsBuilder::withInclude()
+    * @see QueryParamsBuilder::withUseAsId()
+    */
+   public function forFindItem($id) : QueryParamsBuilder
+   {
+      return $this->withField()->withInclude()->withUseAsId($id);
+   }
+
+   /**
     * Build a {@link QueryParams QueryParams} with all specified elements.
     * @see QueryParamsBuilder::forFindCollection()
     * @see QueryParamsBuilder::withField()
@@ -97,6 +111,8 @@ class QueryParamsBuilder
     * @see QueryParamsBuilder::withSkip()
     * @see QueryParamsBuilder::withSort()
     * @see QueryParamsBuilder::withSortDesc()
+    * @see QueryParamsBuilder::withSearch()
+    * @see QueryParamsBuilder::withUseAsId()
     * @return QueryParams
     */
    public function build() : QueryParams
@@ -122,6 +138,9 @@ class QueryParamsBuilder
       }
       if (isset($this->aSearch)) {
          $qParams->put(QueryParams::SEARCH, $this->aSearch);
+      }
+      if (isset($this->aUseAsId)) {
+         $qParams->put(QueryParams::USE_AS_ID, $this->aUseAsId);
       }
       return $qParams;
    }
@@ -241,6 +260,22 @@ class QueryParamsBuilder
       if (isset($this->resource)) {
          $entity = $this->resource->entity();
          $this->aSearch = $this->request->only($entity->getVisible());
+      }
+      return $this;
+   }
+
+   /**
+    * Get the 'use_as_id' parameter of the Query String.
+    * <p>This parameter should be a string.</p>
+    * <p>The values should be a known field of the resource object.</p>
+    * @param string|int $id The identifier to find
+    * @return QueryParamsBuilder
+    */
+   public function withUseAsId($id): QueryParamsBuilder
+   {
+      $useAsId = $this->request->input(QueryParams::USE_AS_ID, false);
+      if ($useAsId) {
+         $this->aUseAsId = [$useAsId, $id];
       }
       return $this;
    }

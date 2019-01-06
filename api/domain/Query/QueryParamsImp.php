@@ -51,4 +51,15 @@ class QueryParamsImp extends ArrayMapImp implements QueryParams
       }
       return false;
    }
+   
+   /**
+    * {@inheritdoc}
+    */
+   public function hasUseAsId() : bool
+   {
+      if ($this->has(QueryParams::USE_AS_ID)) {
+         return true;
+      }
+      return false;
+   }
 }

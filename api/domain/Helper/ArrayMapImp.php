@@ -71,6 +71,23 @@ class ArrayMapImp implements ArrayMap
    /**
     * {@inheritdoc}
     */
+   public function getString($pName) : string
+   {
+      if (array_key_exists($pName, $this->map)) {
+         $value = $this->map[$pName];
+         if (is_string($value)) {
+            return $value;
+         }
+         if (is_int($value)) {
+            return strval($value);
+         }
+      }
+      return '';
+   }
+
+   /**
+    * {@inheritdoc}
+    */
    public function toArray() : array
    {
       return array_merge([], $this->map);
@@ -83,5 +100,4 @@ class ArrayMapImp implements ArrayMap
    {
       $this->map[$pName] = $pValue;
    }
-
 }

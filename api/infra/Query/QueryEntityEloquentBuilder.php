@@ -134,6 +134,22 @@ class QueryEntityEloquentBuilder implements QueryEntityBuilder
             throw new DomainException($mess);
          }
       }
+      if ($this->queryParams->has(QueryParams::USE_AS_ID)) {
+         $aUseAsId = $this->queryParams->getArray(QueryParams::USE_AS_ID);
+         if (count($aUseAsId) > 0) {
+            if (false === in_array($aUseAsId[0], $this->entity->getVisible())) {
+               $mess = 'Unknown field to use as id : ' . $aUseAsId[0];
+               throw new DomainException($mess);
+            }
+            if (count($aUseAsId) === 1) {
+               $mess = 'Use as id : value mandatory';
+               throw new DomainException($mess);
+            }
+         } else {
+            $mess = 'Use as id : field mandatory';
+            throw new DomainException($mess);
+         }
+      }
       return true;
    }
 
@@ -143,7 +159,7 @@ class QueryEntityEloquentBuilder implements QueryEntityBuilder
     */
    protected function buildParams($query)
    {
-      if (false === $this->queryParams->hasAllFields()) {
+      if (false === $this->queryParams->hasAllFields() && $this->queryParams->has(QueryParams::FIELD)) {
          $query->select($this->queryParams->getArray(QueryParams::FIELD));
       }
       if ($this->queryParams->hasLimit()) {
@@ -155,6 +171,7 @@ class QueryEntityEloquentBuilder implements QueryEntityBuilder
       }
       $this->buildParamsSortDesc($query);
       $this->buildParamsSearch($query);
+      $this->buildParamsUseAsId($query);
    }
 
    /**
@@ -198,6 +215,20 @@ class QueryEntityEloquentBuilder implements QueryEntityBuilder
                $aWheres[] = $this->calculateWhere($field, $expr);
             }
          }
+         $this->addWhere($query, $aWheres);
+      }
+   }
+
+   /**
+    * Build the query for Search parameters.
+    * @param $query Builder
+    */
+   protected function buildParamsUseAsId($query)
+   {
+      if ($this->queryParams->hasUseAsId()) {
+         $aUseAsId = $this->queryParams->getArray(QueryParams::USE_AS_ID);
+         $aWheres = array();
+         $aWheres[] = $this->calculateWhere($aUseAsId[0], $aUseAsId[1]);
          $this->addWhere($query, $aWheres);
       }
    }
