@@ -228,10 +228,19 @@ class ThingTest extends TestCase
    {
       $thingsPaginator = Thing::paginate(5);
       $this->assertCount(5, $thingsPaginator->items());
-//      Log::debug(print_r($thingsPaginator, true));
-//      Log::debug(print_r($thingsPaginator, true));
-      $thingsPaginator->withPath('custom/url');
 
+      $this->assertEquals(5, $thingsPaginator->count());
+      $this->assertEquals(203, $thingsPaginator->total());
+      $this->assertEquals(1, $thingsPaginator->firstItem());
+      $this->assertEquals(5, $thingsPaginator->lastItem());
+      $this->assertEquals(1, $thingsPaginator->currentPage());
+      $this->assertEquals(5, $thingsPaginator->perPage());
+      $this->assertEquals(41, $thingsPaginator->lastPage());
+      $this->assertTrue($thingsPaginator->onFirstPage());
+      $this->assertTrue($thingsPaginator->hasMorePages());
+      
+//      $thingsPaginator->withPath('custom/url');
+//      Log::debug('>>>>>>>>>>>>>>>>>>>>>>>>>>> ' . "Thing::paginate(5, ['*'], 'page', 10)");
 //      Log::debug('count()' . print_r($thingsPaginator->count(), true));
 //      Log::debug('currentPage()' . print_r($thingsPaginator->currentPage(), true));
 //      Log::debug('firstItem()' . print_r($thingsPaginator->firstItem(), true));
@@ -244,8 +253,6 @@ class ThingTest extends TestCase
 //      Log::debug('previousPageUrl()' . print_r($thingsPaginator->previousPageUrl(), true));
 //      Log::debug('total()' . print_r($thingsPaginator->total(), true));
 //      Log::debug('url(13)' . print_r($thingsPaginator->url(13), true));
-
-
    }
 
    /**
@@ -253,21 +260,31 @@ class ThingTest extends TestCase
     */
    public function paginate_With_All_Parameters()
    {
-      $thingsPaginator = Thing::paginate(5, ['*'], 'page', 13);
+      $thingsPaginator = Thing::paginate(5, ['*'], 'page', 10);
       $this->assertCount(5, $thingsPaginator->items());
 
-      Log::debug('>>>>>>>>>>>>>>>>>>>>>>>>>>> '."Thing::paginate(5, ['*'], 'page', 13)");
-      Log::debug('count() : ' . print_r($thingsPaginator->count(), true));
-      Log::debug('currentPage() : ' . print_r($thingsPaginator->currentPage(), true));
-      Log::debug('firstItem() : ' . print_r($thingsPaginator->firstItem(), true));
-      Log::debug('hasMorePages() : ' . print_r($thingsPaginator->hasMorePages(), true));
-      Log::debug('lastItem() : ' . print_r($thingsPaginator->lastItem(), true));
-      Log::debug('lastPage() : ' . print_r($thingsPaginator->lastPage(), true));
-      Log::debug('nextPageUrl() : ' . print_r($thingsPaginator->nextPageUrl(), true));
-      Log::debug('onFirstPage() : ' . print_r($thingsPaginator->onFirstPage(), true));
-      Log::debug('perPage() : ' . print_r($thingsPaginator->perPage(), true));
-      Log::debug('previousPageUrl() : ' . print_r($thingsPaginator->previousPageUrl(), true));
-      Log::debug('total() : ' . print_r($thingsPaginator->total(), true));
-      Log::debug('url(13) : ' . print_r($thingsPaginator->url(13), true));
+      $this->assertEquals(5, $thingsPaginator->count());
+      $this->assertEquals(203, $thingsPaginator->total());
+      $this->assertEquals(46, $thingsPaginator->firstItem());
+      $this->assertEquals(50, $thingsPaginator->lastItem());
+      $this->assertEquals(10, $thingsPaginator->currentPage());
+      $this->assertEquals(5, $thingsPaginator->perPage());
+      $this->assertEquals(41, $thingsPaginator->lastPage());
+      $this->assertFalse($thingsPaginator->onFirstPage());
+      $this->assertTrue($thingsPaginator->hasMorePages());
+
+//      Log::debug('>>>>>>>>>>>>>>>>>>>>>>>>>>> ' . "Thing::paginate(5, ['*'], 'page', 10)");
+//      Log::debug('count() : ' . print_r($thingsPaginator->count(), true));
+//      Log::debug('currentPage() : ' . print_r($thingsPaginator->currentPage(), true));
+//      Log::debug('firstItem() : ' . print_r($thingsPaginator->firstItem(), true));
+//      Log::debug('hasMorePages() : ' . print_r($thingsPaginator->hasMorePages(), true));
+//      Log::debug('lastItem() : ' . print_r($thingsPaginator->lastItem(), true));
+//      Log::debug('lastPage() : ' . print_r($thingsPaginator->lastPage(), true));
+//      Log::debug('nextPageUrl() : ' . print_r($thingsPaginator->nextPageUrl(), true));
+//      Log::debug('onFirstPage() : ' . print_r($thingsPaginator->onFirstPage(), true));
+//      Log::debug('perPage() : ' . print_r($thingsPaginator->perPage(), true));
+//      Log::debug('previousPageUrl() : ' . print_r($thingsPaginator->previousPageUrl(), true));
+//      Log::debug('total() : ' . print_r($thingsPaginator->total(), true));
+//      Log::debug('url(13) : ' . print_r($thingsPaginator->url(13), true));
    }
 }
