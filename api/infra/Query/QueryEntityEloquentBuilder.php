@@ -8,7 +8,7 @@ use Domain\Query\QueryEntityBuilder;
 use Domain\Query\QueryParams;
 use DomainException;
 use Illuminate\Database\Eloquent\Builder;
-use Infra\EloquentBuilder;
+use Infra\EloquentInfraBuilder;
 
 class QueryEntityEloquentBuilder implements QueryEntityBuilder
 {
@@ -80,7 +80,7 @@ class QueryEntityEloquentBuilder implements QueryEntityBuilder
    protected function createInfraBuilder(InfraBuilder $infraBuilder = null) : InfraBuilder
    {
       if (is_null($infraBuilder)) {
-         return new EloquentBuilder($this->entity->query());
+         return new EloquentInfraBuilder($this->entity->query());
       }
       return $infraBuilder;
    }

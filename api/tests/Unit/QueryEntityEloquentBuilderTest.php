@@ -10,7 +10,7 @@ use Domain\Query\QueryParams;
 use Domain\Query\QueryParamsImp;
 use Illuminate\Database\Eloquent\Builder as IlluEloquentBuilder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Infra\EloquentBuilder;
+use Infra\EloquentInfraBuilder;
 use Infra\Query\QueryEntityEloquentBuilder;
 use Tests\TestCase;
 
@@ -80,7 +80,7 @@ class QueryEntityEloquentBuilderTest extends TestCase
          ->setConstructorArgs([$this->mockDatabaseQueryBuilder])
          ->setMethods(['select', 'skip', 'limit', 'with', 'orderBy', 'where'])
          ->getMock();
-      $this->mockBuilder = new QueryEntityEloquentBuilder($this->realEntity, new EloquentBuilder($this->mockDatabaseEloquentBuilder));
+      $this->mockBuilder = new QueryEntityEloquentBuilder($this->realEntity, new EloquentInfraBuilder($this->mockDatabaseEloquentBuilder));
    }
 
    /**
@@ -89,7 +89,7 @@ class QueryEntityEloquentBuilderTest extends TestCase
    public function constructResult()
    {
       $this->assertNotNull($this->realBuilder->infraBuilder());
-      $this->assertEquals('Infra\EloquentBuilder', get_class($this->realBuilder->infraBuilder()));
+      $this->assertEquals('Infra\EloquentInfraBuilder', get_class($this->realBuilder->infraBuilder()));
    }
 
    /**
