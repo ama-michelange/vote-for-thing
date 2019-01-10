@@ -63,8 +63,11 @@ class QueryEntityEloquentAdapter implements QueryEntity
    /**
     * {@inheritdoc}
     */
-   public function findItem($id, QueryParams $queryParams) : Entity
+   public function findItem($id, QueryParams $queryParams = null) : Entity
    {
+      if (is_null($queryParams)) {
+         return $this->builder->infraBuilder()->builder()->find($id);
+      }
       $ret = null;
       $this->builder->withParams($queryParams)->build();
       if ($queryParams->hasUseAsId()) {

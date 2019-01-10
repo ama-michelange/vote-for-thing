@@ -53,14 +53,14 @@ abstract class Resource
     *
     * @var string
     */
-   protected $resourceKeySingular = 'data';
+   protected $keySingular = 'data';
 
    /**
     * Resource key for a collection.
     *
     * @var string
     */
-   protected $resourceKeyPlural = 'data';
+   protected $keyPlural = 'data';
 
    /**
     * Constructor.
@@ -96,6 +96,23 @@ abstract class Resource
       return new DataArraySerializer();
    }
 
+   /**
+    * Resource key for an item.
+    * @return string
+    */
+   public function keySingular() : string
+   {
+      return $this->keySingular;
+   }
+
+   /**
+    * Resource key for a collection.
+    * @return string
+    */
+   public function keyPlural() : string
+   {
+      return $this->keyPlural;
+   }
 
    /**
     * Transform a model item to a resource item.
@@ -106,7 +123,7 @@ abstract class Resource
     */
    public function transformItem($item, $queryParams)
    {
-      $resource = new Item($item, $this->transformer, $this->resourceKeySingular);
+      $resource = new Item($item, $this->transformer, $this->keySingular);
       $rootScope = $this->prepareRootScope($resource, $queryParams);
       return $rootScope->toArray();
    }
@@ -121,7 +138,7 @@ abstract class Resource
     */
    public function transformCollection($collection, $queryParams)
    {
-      $resource = new Collection($collection, $this->transformer, $this->resourceKeyPlural);
+      $resource = new Collection($collection, $this->transformer, $this->keyPlural);
 
       if ($queryParams->hasLimit()) {
          $limit = $queryParams->getInt(QueryParams::LIMIT);
@@ -178,7 +195,7 @@ abstract class Resource
     *
     * @return array
     */
-   protected function rulesForCreate()
+   public function rulesForCreate()
    {
       return [];
    }
@@ -190,7 +207,7 @@ abstract class Resource
     *
     * @return array
     */
-   protected function rulesForUpdate($id)
+   public function rulesForUpdate($id)
    {
       return [];
    }
@@ -202,7 +219,7 @@ abstract class Resource
     *
     * @return Response
     */
-   protected function errorForbidden($message = 'Forbidden')
+   public function errorForbidden($message = 'Forbidden')
    {
       return $this->transformError(403, $message);
    }
@@ -226,7 +243,7 @@ abstract class Resource
     *
     * @return Response
     */
-   protected function errorNotFound($message = 'Resource Not Found')
+   public function errorNotFound($message = 'Resource Not Found')
    {
       return $this->transformError(404, $message);
    }
@@ -238,7 +255,7 @@ abstract class Resource
     *
     * @return Response
     */
-   protected function errorUnauthorized($message = 'Unauthorized')
+   public function errorUnauthorized($message = 'Unauthorized')
    {
       return $this->transformError(401, $message);
    }
@@ -250,7 +267,7 @@ abstract class Resource
     *
     * @return Response
     */
-   protected function errorWrongArgs($message = 'Wrong Arguments')
+   public function errorWrongArgs($message = 'Wrong Arguments')
    {
       return $this->transformError(400, $message);
    }
@@ -274,7 +291,7 @@ abstract class Resource
     * @param Model | null $pItem Les données en provenance de la base de données (PUT)
     * @return array Les données transformées prêtes à sauvegarder
     */
-   protected function transformBeforeSave($pData, $pItem = null)
+   public function transformBeforeSave($pData, $pItem = null)
    {
       return $pData;
    }

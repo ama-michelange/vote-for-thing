@@ -24,12 +24,12 @@ interface Query
 
    /**
     * Find a item of entities objects based on query parameters.
-    * 
+    *
     * @param string|int $id Identifier of the item to find
     * @param QueryParams $queryParams The parameters of the query
     * @return Entity|null The requested object or null if not found
     */
-   public function findItem($id, QueryParams $queryParams) : Entity;
+   public function findItem($id, QueryParams $queryParams = null) : Entity;
 
 }
 

@@ -65,7 +65,7 @@ class QueryImp implements Query
    /**
     * {@inheritdoc}
     */
-   public function findItem($id, QueryParams $queryParams) : Entity
+   public function findItem($id, QueryParams $queryParams = null) : Entity
    {
       // TODO Action supplémentaire à faire ici pour limiter/filtrer par domaine ou projet
       return $this->adapter->findItem($id, $queryParams);

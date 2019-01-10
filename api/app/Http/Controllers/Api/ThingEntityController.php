@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\Resource;
 use App\Http\Resources\ThingResource;
 
-class ThingQueryController extends QueryController
+class ThingEntityController extends EntityController
 {
    /**
     * {@inheritdoc}

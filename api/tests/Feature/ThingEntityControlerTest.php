@@ -5,11 +5,11 @@ namespace Tests\Feature;
 use Illuminate\Support\Facades\Log;
 use Tests\DatabaseMigrateTestCase;
 
-class ThingQueryControlerTest extends DatabaseMigrateTestCase
+class ThingEntityControlerTest extends DatabaseMigrateTestCase
 {
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll()
    {
@@ -42,7 +42,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Field()
    {
@@ -67,7 +67,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Unknown_Field()
    {
@@ -81,7 +81,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Include()
    {
@@ -123,7 +123,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Include_Unknown()
    {
@@ -137,7 +137,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Limit()
    {
@@ -163,7 +163,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Limit_Skip()
    {
@@ -189,7 +189,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Limit_Skip_BadStringValue()
    {
@@ -210,7 +210,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Sort_1()
    {
@@ -234,7 +234,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Sort_2()
    {
@@ -256,7 +256,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Sort_And_Unknown_Field()
    {
@@ -270,7 +270,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Sort_And_Desc_1()
    {
@@ -295,7 +295,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Sort_And_Desc_2()
    {
@@ -320,7 +320,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getAll_With_Sort_And_Desc_And_Unknown_Field()
    {
@@ -334,7 +334,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getSearch_With_Like_Begin()
    {
@@ -352,7 +352,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getSearch_With_Like_Contains()
    {
@@ -374,7 +374,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getSearch_Without_Parameters()
    {
@@ -387,7 +387,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getId()
    {
@@ -415,7 +415,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getId_With_Field()
    {
@@ -436,7 +436,7 @@ class ThingQueryControlerTest extends DatabaseMigrateTestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function getId_With_Include()
    {
