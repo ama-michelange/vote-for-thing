@@ -56,9 +56,10 @@ export class ThingsService {
                   this.thingsStore.setError(results);
                   return of(null);
                } else {
-                  const ret = (results as ApiThings).data;
-                  this.thingsStore.set(ret);
-                  return ret;
+                  const datas = (results as ApiThings).data;
+                  console.log("DATAS", datas);
+                  this.thingsStore.set(datas);
+                  return datas;
                }
             })
          )

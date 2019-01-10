@@ -28,11 +28,12 @@ export class ThingDataService {
     * @returns  The observable of the read things or of the reading error
     */
    public getAll(): Observable<ApiThings | HttpErrorResponse> {
+      const url = `${urlApiBase}?sort=lib_title&fields=id,title,number,proper_title,image_url`;
       const options = {
          headers: new HttpHeaders({ Accept: "application/json" }),
          observe: "response" as "body"
       };
-      return this.http.get<HttpResponse<ApiThings>>(urlApiBase, options).pipe(
+      return this.http.get<HttpResponse<ApiThings>>(url, options).pipe(
          map(response => {
             return response.body;
          }),
