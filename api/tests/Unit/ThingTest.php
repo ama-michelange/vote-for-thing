@@ -35,7 +35,7 @@ class ThingTest extends TestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function differenceBetween_First_Get()
    {
@@ -74,7 +74,7 @@ class ThingTest extends TestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function differenceBetween_First_Get_With_OneToMany()
    {
@@ -127,7 +127,7 @@ class ThingTest extends TestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function where()
    {
@@ -180,7 +180,7 @@ class ThingTest extends TestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function select()
    {
@@ -194,7 +194,7 @@ class ThingTest extends TestCase
    }
 
    /**
-    * @testSkipped
+    * @test
     */
    public function attributesToArray()
    {
@@ -238,7 +238,7 @@ class ThingTest extends TestCase
       $this->assertEquals(41, $thingsPaginator->lastPage());
       $this->assertTrue($thingsPaginator->onFirstPage());
       $this->assertTrue($thingsPaginator->hasMorePages());
-      
+
 //      $thingsPaginator->withPath('custom/url');
 //      Log::debug('>>>>>>>>>>>>>>>>>>>>>>>>>>> ' . "Thing::paginate(5, ['*'], 'page', 10)");
 //      Log::debug('count()' . print_r($thingsPaginator->count(), true));
