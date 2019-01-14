@@ -35,7 +35,10 @@ class QueryParamsImpTest extends TestCase
       $this->queryParams->put(QueryParams::USE_AS_ID, QueryParamsImpTest::STRING_USE_AS_ID);
    }
 
-   public function testHas()
+   /**
+    * @test
+    */
+   public function given_has()
    {
       $this->assertTrue($this->queryParams->has(QueryParams::LIMIT));
       $this->assertTrue($this->queryParams->has(QueryParams::SKIP));
@@ -46,7 +49,10 @@ class QueryParamsImpTest extends TestCase
       $this->assertTrue($this->queryParams->has(QueryParams::USE_AS_ID));
    }
 
-   public function testGet()
+   /**
+    * @test
+    */
+   public function given_get()
    {
       $this->assertEquals(QueryParamsImpTest::INT_LIMIT, $this->queryParams->get(QueryParams::LIMIT));
       $this->assertEquals(QueryParamsImpTest::INT_SKIP, $this->queryParams->get(QueryParams::SKIP));
@@ -57,7 +63,10 @@ class QueryParamsImpTest extends TestCase
       $this->assertEquals(QueryParamsImpTest::STRING_USE_AS_ID, $this->queryParams->get(QueryParams::USE_AS_ID));
    }
 
-   public function testGetInt()
+   /**
+    * @test
+    */
+   public function given_getInt()
    {
       $this->assertEquals(QueryParamsImpTest::INT_LIMIT, $this->queryParams->getInt(QueryParams::LIMIT));
       $this->assertEquals(QueryParamsImpTest::INT_SKIP, $this->queryParams->getInt(QueryParams::SKIP));
@@ -68,7 +77,10 @@ class QueryParamsImpTest extends TestCase
       $this->assertEquals(0, $this->queryParams->getInt(QueryParams::USE_AS_ID));
    }
 
-   public function testGetString()
+   /**
+    * @test
+    */
+   public function given_getString()
    {
       $this->assertEquals(QueryParamsImpTest::INT_LIMIT, $this->queryParams->getString(QueryParams::LIMIT));
       $this->assertEquals(QueryParamsImpTest::INT_SKIP, $this->queryParams->getString(QueryParams::SKIP));
@@ -79,7 +91,10 @@ class QueryParamsImpTest extends TestCase
       $this->assertEquals(QueryParamsImpTest::STRING_USE_AS_ID, $this->queryParams->getString(QueryParams::USE_AS_ID));
    }
 
-   public function testGetArray()
+   /**
+    * @test
+    */
+   public function given_getArray()
    {
       $this->assertEquals([], $this->queryParams->getArray(QueryParams::LIMIT));
       $this->assertEquals([], $this->queryParams->getArray(QueryParams::SKIP));
@@ -90,7 +105,10 @@ class QueryParamsImpTest extends TestCase
       $this->assertEquals([], $this->queryParams->getArray(QueryParams::USE_AS_ID));
    }
 
-   public function testToArray()
+   /**
+    * @test
+    */
+   public function given_toArray()
    {
       $myArray = [
          QueryParams::LIMIT => QueryParamsImpTest::INT_LIMIT,
@@ -104,7 +122,10 @@ class QueryParamsImpTest extends TestCase
       $this->assertEquals($myArray, $this->queryParams->toArray());
    }
 
-   public function testHasAllFields()
+   /**
+    * @test
+    */
+   public function given_hasAllFields()
    {
       $queryParams = new QueryParamsImp();
       $this->assertFalse($queryParams->hasAllFields());
@@ -116,7 +137,10 @@ class QueryParamsImpTest extends TestCase
       $this->assertTrue($queryParams->hasAllFields());
    }
 
-   public function testHasLimit()
+   /**
+    * @test
+    */
+   public function given_hasLimit()
    {
       $queryParams = new QueryParamsImp();
       $this->assertFalse($queryParams->hasLimit());
@@ -128,7 +152,10 @@ class QueryParamsImpTest extends TestCase
       $this->assertTrue($queryParams->hasLimit());
    }
 
-   public function testHasSearch()
+   /**
+    * @test
+    */
+   public function given_hasSearch()
    {
       $queryParams = new QueryParamsImp();
       $this->assertFalse($queryParams->hasSearch());
@@ -140,7 +167,10 @@ class QueryParamsImpTest extends TestCase
       $this->assertTrue($queryParams->hasSearch());
    }
 
-   public function testHasEmptySearch()
+   /**
+    * @test
+    */
+   public function given_hasEmptySearch()
    {
       $queryParams = new QueryParamsImp();
       $this->assertFalse($queryParams->hasEmptySearch());
@@ -152,7 +182,10 @@ class QueryParamsImpTest extends TestCase
       $this->assertTrue($queryParams->hasEmptySearch());
    }
 
-   public function testHasUseAsId()
+   /**
+    * @test
+    */
+   public function given_hasUseAsId()
    {
       $queryParams = new QueryParamsImp();
       $this->assertFalse($queryParams->hasUseAsId());

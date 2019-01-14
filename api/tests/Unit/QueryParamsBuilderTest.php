@@ -43,8 +43,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->resource = new MyResource();
    }
 
-
-   public function testDirectBuild()
+   /**
+    * @test
+    */
+   public function given_QueryParamsBuilder_when_build_without_initialized()
    {
       $params = (new QueryParamsBuilder($this->request))->build();
       $this->assertFalse($params->has(QueryParams::LIMIT));
@@ -56,7 +58,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertFalse($params->has(QueryParams::USE_AS_ID));
    }
 
-   public function testWithLimit()
+   /**
+    * @test
+    */
+  public function given_QueryParamsBuilder_when_withLimit()
    {
       // QueryString empty
       $params = (new QueryParamsBuilder($this->request))->withLimit()->build();
@@ -83,7 +88,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertEquals(0, $params->get(QueryParams::LIMIT));
    }
 
-   public function testWithLimit_MyDefaultMaximumBuilder()
+   /**
+    * @test
+    */
+   public function given_MyDefaultMaximumBuilder_when_withLimit()
    {
       // QueryString empty
       $params = (new MyDefaultMaximumBuilder($this->request))->withLimit()->build();
@@ -103,7 +111,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertEquals(500, $params->getInt(QueryParams::LIMIT));
    }
 
-   public function testWithSkip()
+   /**
+    * @test
+    */
+   public function given_QueryParamsBuilder_when_withSkip()
    {
       // QueryString empty
       $params = (new QueryParamsBuilder($this->request))->withSkip()->build();
@@ -130,7 +141,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertEquals(0, $params->get(QueryParams::SKIP));
    }
 
-   public function testWithField()
+   /**
+    * @test
+    */
+   public function given_QueryParamsBuilder_when_withField()
    {
       // QueryString empty
       $params = (new QueryParamsBuilder($this->request))->withField()->build();
@@ -173,7 +187,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertEquals(0, $params->getInt(QueryParams::FIELD));
    }
 
-   public function testWithInclude()
+   /**
+    * @test
+    */
+   public function given_QueryParamsBuilder_when_withInclude()
    {
       // QueryString empty
       $params = (new QueryParamsBuilder($this->request))->withInclude()->build();
@@ -203,7 +220,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertFalse($params->has(QueryParams::INCLUDE));
    }
 
-   public function testWithSort()
+   /**
+    * @test
+    */
+   public function given_QueryParamsBuilder_when_withSort()
    {
       // QueryString empty
       $params = (new QueryParamsBuilder($this->request))->withSort()->build();
@@ -239,7 +259,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertFalse($params->has(QueryParams::SORT));
    }
 
-   public function testWithSortDesc()
+   /**
+    * @test
+    */
+   public function given_QueryParamsBuilder_when_withSortDesc()
    {
       // QueryString empty
       $params = (new QueryParamsBuilder($this->request))->withSortDesc()->build();
@@ -290,7 +313,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertEquals(['sort_one'], $params->getArray(QueryParams::DESC));
    }
 
-   public function testWithSearch()
+   /**
+    * @test
+    */
+   public function given_QueryParamsBuilder_when_withSearch()
    {
       // QueryString empty without resource
       $params = (new QueryParamsBuilder($this->request))->withSearch()->build();
@@ -329,7 +355,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertEquals(['name' => 'name_value', 'title' => 'title_value'], $params->getArray(QueryParams::SEARCH));
    }
 
-   public function testWithUseAsId()
+   /**
+    * @test
+    */
+   public function given_QueryParamsBuilder_when_withUseAsId()
    {
       // QueryString empty
       $params = (new QueryParamsBuilder($this->request))->withUseAsId(13)->build();
@@ -355,7 +384,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertEquals([123, 'myValue'], $params->getArray(QueryParams::USE_AS_ID));
    }
 
-   public function testForFindCollection()
+   /**
+    * @test
+    */
+   public function given_QueryParamsBuilder_when_forFindCollection()
    {
       // QueryString empty
       $params = (new QueryParamsBuilder($this->request))->forFindCollection()->build();
@@ -392,7 +424,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertEquals(['desc_one'], $params->getArray(QueryParams::DESC));
    }
 
-   public function testForSearchCollection()
+   /**
+    * @test
+    */
+   public function given_QueryParamsBuilder_when_forSearchCollection()
    {
       // QueryString empty
       $params = (new QueryParamsBuilder($this->request))->forSearchCollection()->build();
@@ -429,7 +464,10 @@ class QueryParamsBuilderTest extends TestCase
       $this->assertEquals(['name' => 'name_value', 'title' => 'title_value'], $params->getArray(QueryParams::SEARCH));
    }
 
-   public function testForFindItem()
+   /**
+    * @test
+    */
+   public function given_QueryParamsBuilder_when_forFindItem()
    {
       // QueryString empty
       $params = (new QueryParamsBuilder($this->request))->forFindItem(7)->build();
