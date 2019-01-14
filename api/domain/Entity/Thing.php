@@ -30,7 +30,7 @@ class Thing extends Entity
       'legal',
       'description'
    ];
-   
+
    protected $associated = ['category'];
 
    /**
