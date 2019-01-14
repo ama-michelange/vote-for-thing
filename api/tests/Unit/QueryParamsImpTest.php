@@ -38,7 +38,7 @@ class QueryParamsImpTest extends TestCase
    /**
     * @test
     */
-   public function given_has()
+   public function given_QueryParamsImp_when_has()
    {
       $this->assertTrue($this->queryParams->has(QueryParams::LIMIT));
       $this->assertTrue($this->queryParams->has(QueryParams::SKIP));
@@ -52,7 +52,7 @@ class QueryParamsImpTest extends TestCase
    /**
     * @test
     */
-   public function given_get()
+   public function given_QueryParamsImp_when_get()
    {
       $this->assertEquals(QueryParamsImpTest::INT_LIMIT, $this->queryParams->get(QueryParams::LIMIT));
       $this->assertEquals(QueryParamsImpTest::INT_SKIP, $this->queryParams->get(QueryParams::SKIP));
@@ -66,7 +66,7 @@ class QueryParamsImpTest extends TestCase
    /**
     * @test
     */
-   public function given_getInt()
+   public function given_QueryParamsImp_when_getInt()
    {
       $this->assertEquals(QueryParamsImpTest::INT_LIMIT, $this->queryParams->getInt(QueryParams::LIMIT));
       $this->assertEquals(QueryParamsImpTest::INT_SKIP, $this->queryParams->getInt(QueryParams::SKIP));
@@ -80,7 +80,7 @@ class QueryParamsImpTest extends TestCase
    /**
     * @test
     */
-   public function given_getString()
+   public function given_QueryParamsImp_when_getString()
    {
       $this->assertEquals(QueryParamsImpTest::INT_LIMIT, $this->queryParams->getString(QueryParams::LIMIT));
       $this->assertEquals(QueryParamsImpTest::INT_SKIP, $this->queryParams->getString(QueryParams::SKIP));
@@ -94,7 +94,7 @@ class QueryParamsImpTest extends TestCase
    /**
     * @test
     */
-   public function given_getArray()
+   public function given_QueryParamsImp_when_getArray()
    {
       $this->assertEquals([], $this->queryParams->getArray(QueryParams::LIMIT));
       $this->assertEquals([], $this->queryParams->getArray(QueryParams::SKIP));
@@ -108,7 +108,7 @@ class QueryParamsImpTest extends TestCase
    /**
     * @test
     */
-   public function given_toArray()
+   public function given_QueryParamsImp_when_toArray()
    {
       $myArray = [
          QueryParams::LIMIT => QueryParamsImpTest::INT_LIMIT,
@@ -125,7 +125,7 @@ class QueryParamsImpTest extends TestCase
    /**
     * @test
     */
-   public function given_hasAllFields()
+   public function given_QueryParamsImp_when_hasAllFields()
    {
       $queryParams = new QueryParamsImp();
       $this->assertFalse($queryParams->hasAllFields());
@@ -140,7 +140,7 @@ class QueryParamsImpTest extends TestCase
    /**
     * @test
     */
-   public function given_hasLimit()
+   public function given_QueryParamsImp_when_hasLimit()
    {
       $queryParams = new QueryParamsImp();
       $this->assertFalse($queryParams->hasLimit());
@@ -155,7 +155,7 @@ class QueryParamsImpTest extends TestCase
    /**
     * @test
     */
-   public function given_hasSearch()
+   public function given_QueryParamsImp_when_hasSearch()
    {
       $queryParams = new QueryParamsImp();
       $this->assertFalse($queryParams->hasSearch());
@@ -170,7 +170,7 @@ class QueryParamsImpTest extends TestCase
    /**
     * @test
     */
-   public function given_hasEmptySearch()
+   public function given_QueryParamsImp_when_hasEmptySearch()
    {
       $queryParams = new QueryParamsImp();
       $this->assertFalse($queryParams->hasEmptySearch());
@@ -185,7 +185,7 @@ class QueryParamsImpTest extends TestCase
    /**
     * @test
     */
-   public function given_hasUseAsId()
+   public function given_QueryParamsImp_when_hasUseAsId()
    {
       $queryParams = new QueryParamsImp();
       $this->assertFalse($queryParams->hasUseAsId());
