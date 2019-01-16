@@ -518,15 +518,6 @@ class MyDefaultMaximumBuilder extends QueryParamsBuilder
 
 class MyResource extends Resource
 {
-   /**
-    * Entity domain instance.
-    *
-    * @return \Domain\Entity\Entity;
-    */
-   public function entity()
-   {
-      return new MyEntity();
-   }
 
    /**
     * Constructor.
@@ -534,6 +525,7 @@ class MyResource extends Resource
    public function __construct()
    {
       parent::__construct();
+      $this->entity = new MyEntity();
    }
 
    /**

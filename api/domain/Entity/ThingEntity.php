@@ -18,8 +18,10 @@ namespace Domain\Entity;
  * <li>timestamps()</li>
  * </ul>
  */
-class Thing extends Entity
+class ThingEntity extends Entity
 {
+   protected $table = 'things';
+
    protected $fillable = [
       'title',
       'lib_title',
@@ -28,7 +30,7 @@ class Thing extends Entity
       'image_url',
       'description_url',
       'legal',
-      'description'
+      'description',
    ];
 
    protected $associated = ['category'];

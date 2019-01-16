@@ -3,7 +3,7 @@ use App\Entity\V1\Doc as VfaDoc;
 use App\Entity\V1\Group as VfaGroup;
 use Domain\Entity\Category;
 use Domain\Entity\Group;
-use Domain\Entity\Thing;
+use Domain\Entity\ThingEntity;
 use Domain\Helper\ConvertHelper;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -39,7 +39,7 @@ class VftMigrateTools
          'description_url' => $pDoc->url,
          'legal' => $pDoc->date_legal
       ];
-      Thing::create($aField);
+      ThingEntity::create($aField);
    }
 
    /**

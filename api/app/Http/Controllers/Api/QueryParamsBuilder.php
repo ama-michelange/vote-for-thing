@@ -258,8 +258,7 @@ class QueryParamsBuilder
    public function withSearch(): QueryParamsBuilder
    {
       if (isset($this->resource)) {
-         $entity = $this->resource->entity();
-         $this->aSearch = $this->request->only($entity->getVisible());
+         $this->aSearch = $this->request->only($this->resource->fields());
       }
       return $this;
    }

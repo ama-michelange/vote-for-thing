@@ -477,6 +477,7 @@ class ThingEntityControlerTest extends DatabaseMigrateTestCase
          ]
       ]);
    }
+
    /**
     * @test
     */
@@ -505,4 +506,49 @@ class ThingEntityControlerTest extends DatabaseMigrateTestCase
       ]);
    }
 
+   /**
+    * @test
+    */
+   public function create()
+   {
+      $this->markTestIncomplete(
+         'This test has not been implemented yet.'
+      );
+      $data = [
+         'data' => [
+            'title' => 'Sally',
+            'category' => [
+               'data' => [
+                  'id' => 1
+               ]
+            ]
+         ]
+      ];
+      $response = $this->json('POST', 'api/qthings', $data);
+
+      Log::debug(print_r($response, true));
+
+      $response
+         ->assertStatus(201)
+         ->assertJson([
+            'created' => true,
+         ]);
+   }
+
+   /**
+    * @test
+    */
+   public function create_When_Empty_Data()
+   {
+      $response = $this->json('POST', 'api/qthings');
+      $response->assertStatus(400)
+         ->assertJson([
+            "message" => "Empty data",
+            "status_code" => 400,
+         ]);
+      $response = $this->json('POST', 'api/qthings', []);
+      $response->assertStatus(400);
+      $response = $this->json('POST', 'api/qthings', ['name' => 'Sally']);
+      $response->assertStatus(400);
+   }
 }

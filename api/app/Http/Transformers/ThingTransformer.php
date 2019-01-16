@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Transformers;
 
-use Domain\Entity\Thing;
+use Domain\Entity\ThingEntity;
 use League\Fractal\TransformerAbstract;
 
 class ThingTransformer extends TransformerAbstract
@@ -16,7 +16,7 @@ class ThingTransformer extends TransformerAbstract
     * @param $item
     * @return array
     */
-   public function transform(Thing $item)
+   public function transform(ThingEntity $item)
    {
       $ret = array();
       if (false == is_null($item->id)) {
@@ -58,10 +58,10 @@ class ThingTransformer extends TransformerAbstract
    /**
     * Include Category
     *
-    * @param \Domain\Entity\Thing $thing
+    * @param \Domain\Entity\ThingEntity $thing
     * @return \League\Fractal\Resource\Item
     */
-   public function includeCategory(Thing $thing)
+   public function includeCategory(ThingEntity $thing)
    {
       $category = $thing->category;
       return $this->item($category, new CategoryTransformer());

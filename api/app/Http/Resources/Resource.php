@@ -2,6 +2,9 @@
 
 namespace App\Http\Resources;
 
+use Domain\Command\Command;
+use Domain\Entity\Entity;
+use Domain\Query\Query;
 use Domain\Query\QueryParams;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Response;
@@ -21,6 +24,20 @@ abstract class Resource
    protected $entity;
 
    /**
+    * The Query instance of the domain.
+    *
+    * @var Query;
+    */
+   protected $query;
+
+   /**
+    * The Command instance of the domain.
+    *
+    * @var Command;
+    */
+   protected $command;
+
+   /**
     * Fractal Manager instance.
     *
     * @var Manager
@@ -34,12 +51,13 @@ abstract class Resource
     */
    protected $transformer;
 
-   /**
-    * The parameters of the query.
-    *
-    * @var QueryParams
-    */
-   protected $queryParams;
+//
+//   /**
+//    * The parameters of the query.
+//    *
+//    * @var QueryParams
+//    */
+//   protected $queryParams;
 
 //   /**
 //    * Do we need to unguard the model before create/update?
@@ -75,9 +93,33 @@ abstract class Resource
    /**
     * Entity domain instance.
     *
-    * @return \Domain\Entity\Entity;
+    * @return Entity;
     */
-   abstract public function entity();
+   public function entity() : Entity
+   {
+      return $this->entity;
+   }
+
+
+   /**
+    * The Query instance of the domain for this resource.
+    *
+    * @return Query;
+    */
+   public function query() : Query
+   {
+      return $this->query;
+   }
+
+   /**
+    * The Command instance of the domain for this resource.
+    *
+    * @return Command;
+    */
+   public function command() : Command
+   {
+      return $this->command;
+   }
 
    /**
     * Transformer for the current resource.
@@ -85,6 +127,16 @@ abstract class Resource
     * @return \League\Fractal\TransformerAbstract
     */
    abstract protected function transformer();
+
+   /**
+    * All field names that can use.
+    *
+    * @return array;
+    */
+   public function fields() : array
+   {
+      return $this->entity()->getVisible();
+   }
 
    /**
     * Serializer for the current resource.
@@ -296,4 +348,22 @@ abstract class Resource
       return $pData;
    }
 
+   /**
+    * Récupère la valeur de la clé donnée en commancant à chercher dans le tableau de données puis dans l'objet de modèle si non trouvé.
+    * @param string $pKey La clé de la valeur à chercher
+    * @param array $pData Le tableau de données
+    * @param Model | null $pItem L'objet de modèle
+    * @return mixed | null La valeur trouvée ou nul si non trouvé
+    */
+   protected function getValue($pKey, $pData, $pItem = null)
+   {
+      $value = null;
+      if (isset($pData[$pKey])) {
+         $value = $pData[$pKey];
+      }
+      if (null == $value && isset($pItem->$pKey)) {
+         $value = $pItem->$pKey;
+      }
+      return $value;
+   }
 }

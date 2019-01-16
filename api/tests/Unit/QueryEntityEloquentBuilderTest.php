@@ -5,7 +5,7 @@ namespace Tests\Unit;
 
 
 use Domain\Entity\Entity;
-use Domain\Entity\Thing;
+use Domain\Entity\ThingEntity;
 use Domain\Query\QueryParams;
 use Domain\Query\QueryParamsImp;
 use Illuminate\Database\Eloquent\Builder as IlluEloquentBuilder;
@@ -62,7 +62,7 @@ class QueryEntityEloquentBuilderTest extends TestCase
       parent::setUp();
 
       // Real instances
-      $this->realEntity = new Thing();
+      $this->realEntity = new ThingEntity();
       $this->realBuilder = new QueryEntityEloquentBuilder($this->realEntity);
 
       // Extract some data of the entity to prepare tests
@@ -122,7 +122,7 @@ class QueryEntityEloquentBuilderTest extends TestCase
    public function build_When_Verify_Return_True()
    {
       $mock = $this->getMockBuilder(QueryEntityEloquentBuilder::class)
-         ->setConstructorArgs([new Thing()])
+         ->setConstructorArgs([new ThingEntity()])
          ->setMethods(['verify', 'buildParams'])
          ->getMock();
       $mock->expects($this->once())->method('verify')->willReturn(true);
@@ -136,7 +136,7 @@ class QueryEntityEloquentBuilderTest extends TestCase
    public function build_When_Verify_Return_False()
    {
       $mock = $this->getMockBuilder(QueryEntityEloquentBuilder::class)
-         ->setConstructorArgs([new Thing()])
+         ->setConstructorArgs([new ThingEntity()])
          ->setMethods(['verify', 'buildParams'])
          ->getMock();
       $mock->expects($this->once())->method('verify')->willReturn(false);

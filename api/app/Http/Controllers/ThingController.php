@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Transformers\ThingTransformer;
-use Domain\Entity\Thing;
+use Domain\Entity\ThingEntity;
 use Domain\Helper\ConvertHelper;
 
 class ThingController extends ApiController
@@ -14,7 +14,7 @@ class ThingController extends ApiController
     */
    protected function model()
    {
-      return new Thing();
+      return new ThingEntity();
    }
 
    /**

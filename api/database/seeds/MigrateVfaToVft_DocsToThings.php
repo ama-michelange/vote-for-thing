@@ -2,14 +2,14 @@
 
 use App\Entity\V1\Doc;
 use Domain\Entity\Category;
-use Domain\Entity\Thing;
+use Domain\Entity\ThingEntity;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Schema;
 
 class MigrateVfaToVft_DocsToThings extends MigrateVfaToVft_Base
 {
    protected $vfaModelClass = Doc::class;
-   protected $vftModelClass = Thing::class;
+   protected $vftModelClass = ThingEntity::class;
 
    /**
     * Convert VFA Entities Collections to VFT Entities and save it.

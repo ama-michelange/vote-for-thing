@@ -11,6 +11,8 @@ use Domain\Query\QueryParams;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 abstract class EntityController extends BaseController
 {
@@ -29,13 +31,6 @@ abstract class EntityController extends BaseController
     * @var \App\Http\Resources\Resource;
     */
    protected $resource;
-
-   /**
-    * QueryEntity instance.
-    *
-    * @var Query;
-    */
-   protected $queryEntity;
 
    /**
     * Illuminate\Http\Request instance.
@@ -80,7 +75,6 @@ abstract class EntityController extends BaseController
    {
       $this->request = $request;
       $this->resource = $this->resource();
-      $this->queryEntity = new QueryImp($this->resource->entity());
    }
 
    /**
@@ -100,11 +94,11 @@ abstract class EntityController extends BaseController
    {
       $this->queryParams = (new QueryParamsBuilder($this->request, $this->resource))->forFindCollection()->build();
       if ($this->queryParams->hasAllFields()) {
-         $this->setStatusCode(200);
+         $this->setStatusCode(HttpResponse::HTTP_OK);
       } else {
-         $this->setStatusCode(206);
+         $this->setStatusCode(HttpResponse::HTTP_PARTIAL_CONTENT);
       }
-      $items = $this->queryEntity->findCollection($this->queryParams);
+      $items = $this->resource->query()->findCollection($this->queryParams);
       return $this->respondWithCollection($items);
    }
 
@@ -112,11 +106,11 @@ abstract class EntityController extends BaseController
    {
       $this->queryParams = (new QueryParamsBuilder($this->request, $this->resource))->forSearchCollection()->build();
       if ($this->queryParams->hasAllFields()) {
-         $this->setStatusCode(200);
+         $this->setStatusCode(HttpResponse::HTTP_OK);
       } else {
-         $this->setStatusCode(206);
+         $this->setStatusCode(HttpResponse::HTTP_PARTIAL_CONTENT);
       }
-      $items = $this->queryEntity->findCollection($this->queryParams);
+      $items = $this->resource->query()->findCollection($this->queryParams);
       return $this->respondWithCollection($items);
    }
 
@@ -132,11 +126,11 @@ abstract class EntityController extends BaseController
    {
       $this->queryParams = (new QueryParamsBuilder($this->request, $this->resource))->forFindItem($id)->build();
       if ($this->queryParams->hasAllFields()) {
-         $this->setStatusCode(200);
+         $this->setStatusCode(HttpResponse::HTTP_OK);
       } else {
-         $this->setStatusCode(206);
+         $this->setStatusCode(HttpResponse::HTTP_PARTIAL_CONTENT);
       }
-      $items = $this->queryEntity->findItem($id, $this->queryParams);
+      $items = $this->resource->query()->findItem($id, $this->queryParams);
       return $this->respondWithItem($items);
    }
 
@@ -151,19 +145,19 @@ abstract class EntityController extends BaseController
       $data = $this->request->json()->get($this->resource->keySingular());
 
       if (!$data) {
-         return $this->resource->errorWrongArgs('Empty data');
+         throw new BadRequestHttpException('Empty data');
       }
 
       $validator = Validator::make($data, $this->resource->rulesForCreate());
       if ($validator->fails()) {
-         return $this->resource->errorWrongArgs($validator->messages());
+         throw new BadRequestHttpException('Not validated field : ' . $validator->messages());
       }
 
       $data = $this->resource->transformBeforeSave($data);
       $this->unguardIfNeeded();
 
       $item = $this->resource->entity()->create($data);
-      return $this->setStatusCode(201)->respondWithItem($item);
+      return $this->setStatusCode(HttpResponse::HTTP_CREATED)->respondWithItem($item);
    }
 
    /**
@@ -182,7 +176,7 @@ abstract class EntityController extends BaseController
          return $this->resource->errorWrongArgs('Empty data');
       }
 
-      $item = $this->queryEntity->findItem($id);
+      $item = $this->resource->query()->findItem($id);
       if (!$item) {
          return $this->resource->errorNotFound();
       }
@@ -211,15 +205,15 @@ abstract class EntityController extends BaseController
     */
    public function destroy($id)
    {
-      $item = $this->queryEntity->findItem($id);
+      $item = $this->resource->query()->findItem($id);
 
       if (!$item) {
-         return $this->resource-> errorNotFound();
+         return $this->resource->errorNotFound();
       }
 
       $item->delete();
 
-      return response(null, 204);
+      return response(null, HttpResponse::HTTP_NO_CONTENT);
    }
 
    /**

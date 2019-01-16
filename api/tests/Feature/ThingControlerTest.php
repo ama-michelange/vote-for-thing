@@ -13,8 +13,8 @@ class ThingControlerTest extends TestCase
    {
       parent::setUp();
       //      Log::debug('>>> Tests\ThingTest->setUp : ' . get_class($this));
-      $this->artisan('db:migrate', ['--from' => 'json']);
-      //      $this->artisan('db:migrate', ['--from' => 'json', '--quiet' => true]);
+//      $this->artisan('db:migrate', ['--from' => 'json']);
+            $this->artisan('db:migrate', ['--from' => 'json', '--quiet' => true]);
    }
    /**
     * A basic test example.
