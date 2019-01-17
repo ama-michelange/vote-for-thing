@@ -56,6 +56,7 @@ DingoRoute::version('v1', function () {
    DingoRoute::get('qthings', 'App\Http\Controllers\Api\ThingEntityController@index')->name('v4t.things');
    DingoRoute::get('qthings/search', 'App\Http\Controllers\Api\ThingEntityController@search')->name('v4t.things.search');
    DingoRoute::get('qthings/{thing}', 'App\Http\Controllers\Api\ThingEntityController@show')->name('v4t.things.id');
+   DingoRoute::post('qthings', 'App\Http\Controllers\Api\ThingEntityController@store')->name('v4t.things.create');
 
    DingoRoute::group(['middleware' => ['throttle:60,1', 'bindings'], 'namespace' => 'App\Http\Controllers'], function ($api) {
 
