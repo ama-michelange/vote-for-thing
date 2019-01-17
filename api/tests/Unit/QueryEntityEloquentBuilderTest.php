@@ -198,14 +198,15 @@ class QueryEntityEloquentBuilderTest extends TestCase
    /**
     * @test
     */
-   public function build_When_Field_With_Only_Fillable_Fields()
+   public function build_When_Field_With_only_a_part_of_visible_fields()
    {
       $queryParams = new QueryParamsImp();
-      $queryParams->put(QueryParams::FIELD, $this->aFillable);
+      $fields = ['title', 'image_url', 'id', 'proper_title'];
+      $queryParams->put(QueryParams::FIELD, $fields);
 
       $this->mockDatabaseEloquentBuilder->expects($this->once())
          ->method('select')
-         ->with($this->aFillable);
+         ->with($fields);
 
       $this->mockBuilder->withParams($queryParams);
       $this->assertNotNull($this->mockBuilder->build());
