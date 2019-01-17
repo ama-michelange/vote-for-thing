@@ -1,8 +1,8 @@
 <?php
 use App\Entity\V1\Doc as VfaDoc;
 use App\Entity\V1\Group as VfaGroup;
-use Domain\Entity\Category;
-use Domain\Entity\Group;
+use Domain\Entity\CategoryEntity;
+use Domain\Entity\GroupEntity;
 use Domain\Entity\ThingEntity;
 use Domain\Helper\ConvertHelper;
 use Illuminate\Database\Eloquent\Collection;
@@ -12,9 +12,9 @@ class VftMigrateTools
    /**
     * Convert a collection of VFA Doc to VFT Things and save they to database.
     * @param Collection $pDocs
-    * @param \Domain\Entity\Category $pCategory
+    * @param \Domain\Entity\CategoryEntity $pCategory
     */
-   public static function saveToThings(Collection $pDocs, Category $pCategory)
+   public static function saveToThings(Collection $pDocs, CategoryEntity $pCategory)
    {
       foreach ($pDocs as $doc) {
          static::saveToThing($doc, $pCategory);
@@ -24,9 +24,9 @@ class VftMigrateTools
    /**
     * Convert a VFA v1 Doc to Thing and save it to database.
     * @param VfaDoc $pDoc The document to convert
-    * @param \Domain\Entity\Category $pCategory The category of the new thing
+    * @param \Domain\Entity\CategoryEntity $pCategory The category of the new thing
     */
-   public static function saveToThing(VfaDoc $pDoc, Category $pCategory)
+   public static function saveToThing(VfaDoc $pDoc, CategoryEntity $pCategory)
    {
       $aField = [
          'id' => $pDoc->doc_id,
@@ -63,6 +63,6 @@ class VftMigrateTools
          'id' => $pGroup->group_id,
          'name' => ConvertHelper::decodeHtmlSpecialChars($pGroup->group_name)
       ];
-      Group::create($aField);
+      GroupEntity::create($aField);
    }
 }

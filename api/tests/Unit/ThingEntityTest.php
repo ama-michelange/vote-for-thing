@@ -2,8 +2,7 @@
 
 namespace Tests\Unit;
 
-use BadMethodCallException;
-use Domain\Entity\Category;
+use Domain\Entity\CategoryEntity;
 use Domain\Entity\ThingEntity;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -92,11 +91,11 @@ class ThingEntityTest extends TestCase
       $this->assertEquals(Collection::class, get_class($thing->category()->get()));
       $this->assertCount(1, $thing->category()->get());
 
-      $this->assertEquals(Category::class, get_class($thing->category()->get()[0]));
+      $this->assertEquals(CategoryEntity::class, get_class($thing->category()->get()[0]));
       $this->assertEquals('comic', $thing->category()->get()[0]->name);
 
       $this->assertEquals(
-         Category::class,
+         CategoryEntity::class,
          get_class(
             $thing
                ->category()
@@ -112,7 +111,7 @@ class ThingEntityTest extends TestCase
             ->get(0)->name
       );
 
-      $this->assertEquals(Category::class, get_class($thing->category()->first()));
+      $this->assertEquals(CategoryEntity::class, get_class($thing->category()->first()));
       $this->assertNotNull($thing->category()->first());
       $this->assertEquals('comic', $thing->category()->first()->name);
    }
@@ -310,7 +309,7 @@ class ThingEntityTest extends TestCase
       $data = ['title' => 'sally', 'lib_title' => 'libSally', 'category_id' => 1];
 
       $thing = new ThingEntity();
-      $cat = Category::find($data['category_id']);
+      $cat = CategoryEntity::find($data['category_id']);
 //      Log::debug('cat >>>> ' . print_r($cat, true));
 
       $thing->category()->associate($cat);
@@ -406,34 +405,4 @@ class ThingEntityTest extends TestCase
 
    }
 
-   /**
-    * @group current
-    * @test
-    */
-   public function given_ThingEntity_when_findAssociatedForeignKey()
-   {
-      $thing = new ThingEntity();
-      $this->assertEquals('category_id', $thing->findAssociatedForeignKey('category'));
-   }
-
-   /**
-    * @group current
-    * @test
-    * @expectedException BadMethodCallException
-    */
-   public function given_ThingEntity_when_findAssociatedForeignKey_with_unknown_associate()
-   {
-      $thing = new ThingEntity();
-      $thing->findAssociatedForeignKey('unknown');
-   }
-
-   /**
-    * @group current
-    * @test
-    */
-   public function given_ThingEntity_when_findAllAssociatedForeignKey()
-   {
-      $thing = new ThingEntity();
-      $this->assertEquals(['category_id'], $thing->findAllAssociatedForeignKey());
-   }
 }

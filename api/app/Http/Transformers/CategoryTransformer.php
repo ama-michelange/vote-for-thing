@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Transformers;
 
-use Domain\Entity\Category;
+use Domain\Entity\CategoryEntity;
 use League\Fractal\TransformerAbstract;
 
 class CategoryTransformer extends TransformerAbstract
@@ -12,7 +12,7 @@ class CategoryTransformer extends TransformerAbstract
     * @param $item
     * @return array
     */
-   public function transform(Category $item)
+   public function transform(CategoryEntity $item)
    {
       $ret = array();
       if (false == is_null($item->id)) {

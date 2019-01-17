@@ -31,7 +31,10 @@ class ThingEntity extends Entity
       'description_url',
       'legal',
       'description',
+      'category_id',
    ];
+
+   protected $hidden = ['category_id'];
 
    protected $associated = ['category'];
 
@@ -40,7 +43,7 @@ class ThingEntity extends Entity
     */
    public function category()
    {
-      return $this->belongsTo('Domain\Entity\Category');
+      return $this->belongsTo('Domain\Entity\CategoryEntity');
    }
 
 }

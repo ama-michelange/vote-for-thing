@@ -9,8 +9,10 @@ namespace Domain\Entity;
  * <li>string('name', 30)</li>
  * <li>timestamps()</li>
  */
-class Group extends Entity
+class GroupEntity extends Entity
 {
+   protected $table = 'groups';
+   
    protected $fillable = [
       'name'
    ];

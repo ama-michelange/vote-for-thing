@@ -1,6 +1,6 @@
 <?php
 
-use Domain\Entity\Category;
+use Domain\Entity\CategoryEntity;
 use Illuminate\Database\Seeder;
 
 class InitDatabaseSeeder_CategoriesTable extends Seeder
@@ -24,9 +24,9 @@ class InitDatabaseSeeder_CategoriesTable extends Seeder
     */
    private function createIfNotExist($aWhere, $aToCreate)
    {
-      $model = Category::where($aWhere[0], $aWhere[1])->first();
+      $model = CategoryEntity::where($aWhere[0], $aWhere[1])->first();
       if (false == isset($model)) {
-         Category::create($aToCreate);
+         CategoryEntity::create($aToCreate);
       }
    }
 }

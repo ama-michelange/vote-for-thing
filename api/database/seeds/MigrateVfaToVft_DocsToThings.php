@@ -1,7 +1,7 @@
 <?php
 
 use App\Entity\V1\Doc;
-use Domain\Entity\Category;
+use Domain\Entity\CategoryEntity;
 use Domain\Entity\ThingEntity;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +20,7 @@ class MigrateVfaToVft_DocsToThings extends MigrateVfaToVft_Base
       // Search comic category
       $catComic = null;
       if (Schema::hasTable('categories')) {
-         $catComic = Category::where('name', 'comic')->first();
+         $catComic = CategoryEntity::where('name', 'comic')->first();
       }
       if (false == isset($catComic)) {
          exit("Category 'comic' don't found!");
