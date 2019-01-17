@@ -26,7 +26,7 @@ class ThingResourceTest extends TestCase
    public function given_ThingResource_when_entity()
    {
       $this->assertNotNull($this->resource->entity());
-      $this->assertEquals('Domain\Entity\Thing', get_class($this->resource->entity()));
+      $this->assertEquals('Domain\Entity\ThingEntity', get_class($this->resource->entity()));
       $call1 = $this->resource->entity();
       $call2 = $this->resource->entity();
       $this->assertSame($call1, $call2);
