@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Query;
+namespace Domain\Command;
 
 interface Command
 {
