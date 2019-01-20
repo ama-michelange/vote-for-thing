@@ -4,12 +4,10 @@
 namespace Domain\Entity;
 
 
-use BadMethodCallException;
+use Domain\Model\DomModel;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use UnexpectedValueException;
 
-abstract class Entity extends Model
+abstract class Entity extends Model implements DomModel
 {
    protected $associated = [];
 
@@ -61,4 +59,12 @@ abstract class Entity extends Model
       }
    }
 
+   public function fromArray(array $input) : void
+   {
+      if (isset($input)) {
+         foreach ($input as $key => $value) {
+            $this[$key] = $value;
+         }
+      }
+   }
 }
